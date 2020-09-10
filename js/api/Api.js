@@ -4,7 +4,7 @@ class Api {
         this.apiUrl =  apiUrl;
     }
   getPurchases () {
-    return fetch(`/purchases`, {
+    return fetch(`http://www.buymebuyme.xyz/purchases`, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -17,7 +17,7 @@ class Api {
       })
   }
   addPurchases (id) {
-    return fetch(`/purchases`, {
+    return fetch(`http://www.buymebuyme.xyz/purchases`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ class Api {
       })
   }
   removePurchases (id){
-    return fetch(`/purchases/${id}`, {
+    return fetch(`http://www.buymebuyme.xyz/purchases/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ class Api {
       })
   }
   addSubscriptions(id) {
-    return fetch(`/subscriptions`, {
+    return fetch(`http://www.buymebuyme.xyz/subscriptions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ class Api {
       })
   }
   removeSubscriptions (id) {
-    return fetch(`/subscriptions/${id}`, {
+    return fetch(`http://www.buymebuyme.xyz/subscriptions/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ class Api {
       })
   }
   addFavorites (id)  {
-    return fetch(`/favorites`, {
+    return fetch(`http://www.buymebuyme.xyz/favorites`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ class Api {
         })
   }
   removeFavorites (id) {
-    return fetch(`/favorites/${id}`, {
+    return fetch(`http://www.buymebuyme.xyz/favorites/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ class Api {
         })
   }
     getIngredients  (text)  {
-        return fetch(`/ingredients?query=${text}`, {
+        return fetch(`http://www.buymebuyme.xyz/ingredients?query=${text}`, {
             headers: {
                 'Content-Type': 'application/json'
             }

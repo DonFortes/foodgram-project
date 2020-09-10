@@ -1,6 +1,6 @@
 const counterId = document.querySelector('#counter');
 
-const formFieldIngredinet = document.querySelector('.form__field-group-ingredientes');
+const ingredientsContainer = document.querySelector('.form__field-group-ingredientes-container');
 const nameIngredient = document.querySelector('#nameIngredient');
 const formDropdownItems = document.querySelector('.form__dropdown-items');
 const cantidadVal = document.querySelector('#cantidadVal');
@@ -10,9 +10,12 @@ const addIng = document.querySelector('#addIng');
 const api = new Api(apiUrl);
 const header = new Header(counterId);
 
+const defineInitialIndex = function () {
+    return ingredientsContainer.querySelectorAll('.form__field-item-ingredient').length + 1
+}
 
 function Ingredients() {
-    let cur = 1;
+    let cur = defineInitialIndex();
     // клик по элементам с сервера
     const dropdown = (e) => {
         if (e.target.classList.contains('form__item-list')) {
@@ -33,11 +36,12 @@ function Ingredients() {
                              <input id="valueIngredient_${cur}" name="valueIngredient_${cur}" type="hidden" value="${data.value}">
                              <input id="unitsIngredient_${cur}" name="unitsIngredient_${cur}" type="hidden" value="${data.units}">`;
             cur++;
-            elem.addEventListener('click', eventDelete);
-            formFieldIngredinet.insertAdjacentElement('afterend',elem);
+            
+            ingredientsContainer.appendChild(elem);
         }
     };
     // удаление элемента
+
     const eventDelete = (e) => {
         if(e.target.classList.contains('form__field-item-delete')) {
             const item = e.target.closest('.form__field-item-ingredient');
@@ -45,6 +49,7 @@ function Ingredients() {
             item.remove()
         };
     };
+    ingredientsContainer.addEventListener('click', eventDelete);
     // получение данных из инпутов для добавления
     const getValue = (e) => {
         const data = {
