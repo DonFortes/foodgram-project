@@ -12,4 +12,13 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
   django:
-    
+    build: .
+    depends_on:
+      - db
+    restart: always
+    env_file:
+      - ./.env
+    volumes:
+      - .:/code/
+    entrypoint: /code/entrypoint.sh
+  
