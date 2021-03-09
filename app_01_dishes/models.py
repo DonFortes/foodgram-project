@@ -40,14 +40,16 @@ class Recipe(models.Model):
         )
     ingredients = models.ManyToManyField(
         Ingredient,
+        related_name='recipe',
         through='Volume',
         verbose_name='Ингридиенты',
         db_index=True
         )
     tag = models.ManyToManyField(
         Tag,
+        related_name='recipe',
         verbose_name='Тэг',
-        db_index=True
+        db_index=True,
         )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
@@ -63,10 +65,12 @@ class Recipe(models.Model):
 class Volume(models.Model):
     id_recipe = models.ForeignKey(
         Recipe,
+        related_name='volume',
         on_delete=models.CASCADE,
         )
     id_ingredient = models.ForeignKey(
         Ingredient,
+        related_name='volume',
         on_delete=models.CASCADE
         )
     volume = models.IntegerField()
