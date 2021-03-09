@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from . import choices
+# from . import choices
 
 
 User = get_user_model()
@@ -8,13 +8,14 @@ User = get_user_model()
 
 class Ingredient(models.Model):
     title = models.CharField(max_length=50)
+    measure = models.CharField(max_length=10)
 
 
 class Tag(models.Model):
     title = models.CharField(max_length=50)
 
 
-class Reciept(models.Model):
+class Recipe(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name="reciept",
