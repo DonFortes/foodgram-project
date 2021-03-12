@@ -1,5 +1,8 @@
 version: '3.8'
 
+volumes:
+  postgres_data:
+
 services:
 
   db:
@@ -9,8 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
-    environment:
-      - POSTGRES_PASSWORD=postgres
+
   django:
     build: .
     depends_on:
@@ -21,4 +23,15 @@ services:
     volumes:
       - .:/code/
     entrypoint: /code/entrypoint.sh
-  
+
+  nginx:
+    image: nginx:1.19.0-alpine
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - ./static:/code/static
+      - ./media:/code/media
+      - ./conf:/etc/nginx/conf.d/
+    depends_on:
+      - django
+    restart: always
