@@ -8,3 +8,9 @@ class SignUp(CreateView):
     form_class = CreationForm
     success_url = reverse_lazy("signup")
     template_name = "signup.html"
+
+
+class Signup_done(CreateView):
+    form_class = CreationForm
+    success_url = reverse_lazy("signup_done")
+    template_name = "signup_done.html"
