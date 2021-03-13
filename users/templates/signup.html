@@ -1,6 +1,10 @@
-<!-- {% extends 'head_form.html' %} -->
-<body class="body">
-{% include 'header.html' %}
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block main_css %}/static/pages/form.css{% endblock main_css %}
+
+{% block content %}
+{% include 'includes/header.html'%}
+
 <main class="main container">
     <div class="main__header">
         <h1 class="main__title">Регистрация</h1>
@@ -44,6 +48,4 @@
 
 
 </main>
-{% include 'footer.html' %}
-</body>
-</html>
+{% endblock %}

@@ -1,8 +1,9 @@
-<!-- {% extends 'head_index.html' %} -->
-{% extends "head_form.html" %}
+{% extends "base.html" %}
 {% block title %}Выход{% endblock %}
-<body class="body">
-    {% include 'header.html' %}
+
+{% block content %}
+{% include 'includes/header.html'%}
+
 <main class="main container">
     <div class="custom-center-block">
             <p class="custom-text-block">Вы вышли из личного кабинета</p>
@@ -10,9 +11,5 @@
             <button class="button button_style_blue">Перейти на главную</button>
         </div>
     </div>
-
-
 </main>
-{% include 'footer.html' %}
-</body>
-</html>
+{% endblock %}

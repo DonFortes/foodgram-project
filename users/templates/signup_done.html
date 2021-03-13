@@ -1,6 +1,9 @@
-<!-- {% extends 'head_index.html' %} -->
-<body class="body">
-{% include 'header.html' %}
+{% extends "base.html" %}
+{% block title %}Добро пожаловать!{% endblock %}
+
+{% block content %}
+{% include 'includes/header.html' with index=True %}
+
 <main class="main container">
     <div class="custom-center-block">
             <p class="custom-text-block">Добро пожаловать!</p>
@@ -8,9 +11,5 @@
             <button class="button button_style_blue">Перейти на главную</button>
         </div>
     </div>
-
-
 </main>
-{% include 'footer.html' %}
-</body>
-</html>
+{% endblock %}

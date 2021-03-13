@@ -1,13 +1,19 @@
-{% extends "head_form.html" %}
+{% extends "base.html" %}
 {% block title %}Вход{% endblock %}
-<body class="body">
-{% include 'header.html' %}
+{% block main_css %}/static/pages/form.css{% endblock main_css %}
+
+{% block content %}
+{% include 'includes/header.html'%}
+
 <main class="main container">
+
     <div class="main__header">
-        <h1 class="main__title">Войти на сайт</h1>
+        <h1 class="main__title">Вход</h1>
     </div>
+
     <div class="form-container">
         <form class="form">
+
             <div class="form__group">
                 <label for="id_username" class="form__label">Имя</label>
                 <div class="form__field-group">
@@ -15,6 +21,7 @@
                     <span class="form__error"></span>
                 </div>
             </div>
+
             <div class="form__group">
                 <label for="id_password" class="form__label">Пароль</label>
                 <div class="form__field-group">
@@ -22,6 +29,7 @@
                     <span class="form__error">Имя пользователя и пароль не совпадают. Введите правильные данные.</span>
                 </div>
             </div>
+
             <div class="form__footer">
                 <button class="button button_style_blue">Войти</button>
                 <a class="form__forgot-link">Забыли пароль?</a>
@@ -31,6 +39,4 @@
 
 
 </main>
-{% include 'footer.html' %}
-</body>
-</html>
+{% endblock %}

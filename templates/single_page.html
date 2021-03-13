@@ -8,7 +8,7 @@
 <main class="main container">
 
     <div class="single-card" data-id="371" data-author="12">
-        <img src="./images/testCardImg.png" alt="какой-то текст" class="single-card__image">
+        <img src="/static/images/testCardImg.png" alt="какой-то текст" class="single-card__image">
         <div class="single-card__info">
             <div class="single-card__header-info">
                 <h1 class="single-card__title">Французские тосты</h1>
@@ -67,21 +67,21 @@
 {% endblock %}
 
 {% block js %}
-<script src="./js/components/Purchases.js"></script>
+<script src="/static/js/components/Purchases.js"></script>
 {% if user.is_authenticated %}
-<script src="./js/components/Favorites.js"></script>
-<script src="./js/components/Subscribe.js"></script>
+<script src="/static/js/components/Favorites.js"></script>
+<script src="/static/js/components/Subscribe.js"></script>
 {% endif %}
-<script src="./js/config/config.js"></script>
+<script src="/static/js/config/config.js"></script>
 
-<script src="./js/components/MainCards.js"></script>
-<script src="./js/components/SingleCard.js"></script>
-<script src="./js/components/Header.js"></script>
+<script src="/static/js/components/MainCards.js"></script>
+<script src="/static/js/components/SingleCard.js"></script>
+<script src="/static/js/components/Header.js"></script>
 
-<script src="./js/api/Api.js"></script>
+<script src="/static/js/api/Api.js"></script>
 {% if user.is_authenticated %}
-<script src="singlePage.js"></script>
+<script src="/static/singlePage.js"></script>
 {% else %}
-<script src="singlePageNotAuth.js"></script>
+<script src="/static/singlePageNotAuth.js"></script>
 {% endif %}
 {% endblock %}

@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.http import JsonResponse
 
 
 def index(request):
@@ -13,3 +14,18 @@ def index(request):
             # 'page': page, 'paginator': paginator
             }
     )
+
+
+def purchases(request):
+
+    return JsonResponse({'success': 'true'})
+
+
+def subscriptions(request):
+
+    return JsonResponse({'success': 'true'})
+
+
+def favorites(request):
+
+    return JsonResponse({'success': 'true'})

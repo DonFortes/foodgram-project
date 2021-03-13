@@ -2,7 +2,6 @@
 {% block title %}Редактирование рецепта{% endblock %}
 {% block main_css %}/static/pages/form.css{% endblock main_css %}
 
-
 {% block content %}
 {% include 'includes/header.html' with index=True %}
 
@@ -37,7 +36,7 @@
                     </div>
 
                     <div class="form__field-group-ingredientes-container">
-                        
+
                         <div class="form__field-item-ingredient" id="ing_3">
                             <span> Оливки 10шт.</span>
                             <span class="form__field-item-delete"></span>
@@ -99,9 +98,9 @@
 {% endblock %}
 
 {% block js %}
-<script src="./js/config/config.js"></script>
-<script src="./js/components/Header.js"></script>
-<script src="./js/utils/debouncing.js"></script>
-<script src="./js/api/Api.js"></script>
-<script src="formRecipe.js"></script>
+<script src="/static/js/config/config.js"></script>
+<script src="/static/js/components/Header.js"></script>
+<script src="/static/js/utils/debouncing.js"></script>
+<script src="/static/js/api/Api.js"></script>
+<script src="/static/formRecipe.js"></script>
 {% endblock %}
