@@ -6,4 +6,5 @@ from dishes import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("purchases/", views.purchases, name="purchases"),
+
 ]
