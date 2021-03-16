@@ -7,4 +7,14 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("purchases/", views.purchases, name="purchases"),
 
+    path(
+        "<str:username>/follow/",
+        views.profile_follow,
+        name="profile_follow"
+        ),
+    path(
+        "<str:username>/unfollow/",
+        views.profile_unfollow,
+        name="profile_unfollow"
+        ),
 ]

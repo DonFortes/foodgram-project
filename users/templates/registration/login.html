@@ -12,12 +12,13 @@
     </div>
 
     <div class="form-container">
-        <form class="form">
+        <form class="form" method="POST">
+            {% csrf_token %}
 
             <div class="form__group">
                 <label for="id_username" class="form__label">Имя</label>
                 <div class="form__field-group">
-                    <input type="text" name="username" id="id_username" class="form__input">
+                    <input type="text" name="username" id="id_username" class="form__input" value={{ form.username.value|default:"" }}>
                     <span class="form__error"></span>
                 </div>
             </div>
@@ -26,7 +27,7 @@
                 <label for="id_password" class="form__label">Пароль</label>
                 <div class="form__field-group">
                     <input type="password" name="password" id="id_password" class="form__input">
-                    <span class="form__error">Имя пользователя и пароль не совпадают. Введите правильные данные.</span>
+                    <span class="form__error">{% if form.errors %}Ошибка{% endif %}</span>
                 </div>
             </div>
 

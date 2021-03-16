@@ -7,19 +7,20 @@
 <main class="main container">
 
     <div class="main__header">
-        <h1 class="main__title">Вероника Чернова</h1>
+        <h1 class="main__title">{{ author }}</h1>
 
         <!-- tags.html -->
         {% include 'includes/tags.html' %}
         <!-- /tags -->
     </div>
 
+    {% if user.is_authenticated %} 
     <!-- <p style="padding: 0 0 2em 0;"><a class="button button_style_light-blue" href="#">Подписаться на автора</a></p> -->
     <div class="author-subscribe" data-author="323">
         <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_subscribe"
                 name="subscribe" data-out>Подписаться на автора</button></p>
     </div>
-
+    {% endif %}
 
     <div class="card-list">
 

@@ -31,7 +31,7 @@ class Tag(models.Model):
 class Recipe(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
-        related_name="reciept",
+        related_name="recipe",
         verbose_name='Автор'
         )
     name = models.CharField(
@@ -96,3 +96,37 @@ class Volume(models.Model):
         verbose_name='id ингридиента',
         )
     volume = models.IntegerField()
+
+
+class Shop_list(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='shop_list',
+        verbose_name='Пользователь',
+    )
+    recipe_id = models.ManyToManyField(
+        Recipe,
+        related_name='shop_list',
+        blank=True, verbose_name='Список покупок'
+    )
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower',
+        verbose_name='Подписчик',
+        null=True
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='following',
+        verbose_name='Автор',
+        null=True
+    )
+
+    class Meta:
+        unique_together = ["user", "author"]

@@ -10,6 +10,7 @@
         <h1 class="main__title">Регистрация</h1>
     </div>
     <div class="form-container">
+        
         <form class="form">
             <div class="form__group">
                 <label for="id_first_name" class="form__label">Имя</label>
@@ -18,14 +19,16 @@
                     <span class="form__error"></span>
                 </div>
             </div>
+
             <div class="form__group">
                 <label for="id_username" class="form__label">Имя пользователя</label>
                 <div class="form__field-group">
                     <input type="text" name="username" id="id_username" class="form__input">
-                    <span class="form__error">Имя пользователя и пароль не совпадают. Введите правильные данные.
+                    <span class="form__error">{% if form.errors %}Ошибка{% endif %}
                     </span>
                 </div>
             </div>
+
             <div class="form__group">
                 <label for="id_email" class="form__label">Адрес электронной почты</label>
                 <div class="form__field-group">
@@ -33,13 +36,26 @@
                     <span class="form__error"></span>
                 </div>
             </div>
+
             <div class="form__group">
                 <label for="id_password" class="form__label">Пароль</label>
                 <div class="form__field-group">
-                    <input type="password" name="password" id="id_password" class="form__input">
+                    <input type="password" name="password1"
+                           id="id_password" class="form__input">
                     <span class="form__error"></span>
                 </div>
             </div>
+
+            <div class="form__group">
+                <label for="id_password" class="form__label">Пароль</label>
+                <div class="form__field-group">
+                    <input type="password" name="password2"
+                           id="id_password2" class="form__input">
+                    <span class="form__error"></span>
+                </div>
+            </div>
+            </div>
+
             <div class="form__footer">
                 <button class="button button_style_blue">Создать аккаунт</button>
             </div>
