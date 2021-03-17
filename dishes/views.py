@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 import json
-from .models import Follow, Shop_list, User, Recipe
+from .models import Follow, User, Recipe
 
 
 def index(request):
@@ -21,14 +21,15 @@ def index(request):
 
 
 @login_required
+# @require_http_methods("POST")
 def purchases(request):
-    user = request.user
-    recipe_id = int(json.loads(request.body).get('id'))
-    Shop_list.objects.create(
-        user=user,
-        recipe_id=recipe_id,
-    )
-    return JsonResponse({'success': 'true'})
+
+    recipe_id = int(json.loads(request.body).get('id'))  # разобраться как работает
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if request.user not in recipe.basket.all():
+        recipe.basket.add(request.user)
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 
 @login_required
@@ -44,7 +45,19 @@ def shop_list(request):
 
 
 @login_required
-def subscriptions(request):
+def subscriptions(request, id=None):
+    if request.method == 'POST':
+        author = get_object_or_404(User, pk=id)
+        user = request.user
+        if author != user:
+            Follow.objects.get_or_create(
+                user=user,
+                author=author,
+            )
+    elif request.method == 'DELETE':
+        author = get_object_or_404(User, pk=id)
+        user = request.user
+        Follow.objects.filter(user=user, author=author).delete()
 
     return JsonResponse({'success': 'true'})
 
@@ -84,21 +97,9 @@ def profile(request, username):
 
 @login_required
 def profile_follow(request, username):
-    author = get_object_or_404(User, username=username)
-    user = request.user
-    redirect_url = reverse("profile", args=[username])
-    if author != user:
-        Follow.objects.get_or_create(
-            user=user,
-            author=author,
-        )
-    return redirect(redirect_url)
+    pass
 
 
 @login_required
 def profile_unfollow(request, username):
-    author = get_object_or_404(User, username=username)
-    user = request.user
-    Follow.objects.filter(user=user, author=author).delete()
-    redirect_url = reverse("profile", args=[username])
-    return redirect(redirect_url)
+    pass

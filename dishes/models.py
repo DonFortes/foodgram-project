@@ -98,20 +98,6 @@ class Volume(models.Model):
     volume = models.IntegerField()
 
 
-class Shop_list(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='shop_list',
-        verbose_name='Пользователь',
-    )
-    recipe_id = models.ManyToManyField(
-        Recipe,
-        related_name='shop_list',
-        blank=True, verbose_name='Список покупок'
-    )
-
-
 class Follow(models.Model):
     user = models.ForeignKey(
         User,
