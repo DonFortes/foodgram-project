@@ -4,18 +4,22 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 import json
 from .models import Follow, User, Recipe
+from .forms import RecipeForm
 
 
 def index(request):
-    # post_list = Post.objects.all()
-    # paginator = Paginator(post_list, 10)
-    # page_number = request.GET.get('page')
-    # page = paginator.get_page(page_number)
+    recipe_list = Recipe.objects.all()
+
+    paginator = Paginator(recipe_list, 3)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    # И еще теги как-то
     return render(
         request,
         'index.html',
         {
-            # 'page': page, 'paginator': paginator
+            'page': page, 'paginator': paginator
             }
     )
 
@@ -24,24 +28,12 @@ def index(request):
 # @require_http_methods("POST")
 def purchases(request):
 
-    recipe_id = int(json.loads(request.body).get('id'))  # разобраться как работает
+    recipe_id = int(json.loads(request.body).get('id'))
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.user not in recipe.basket.all():
         recipe.basket.add(request.user)
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
-
-
-@login_required
-def shop_list(request):
-
-    return render(
-        request,
-        'shop_list.html',
-        {
-
-        }
-    )
 
 
 @login_required
@@ -62,18 +54,53 @@ def subscriptions(request, id=None):
     return JsonResponse({'success': 'true'})
 
 
+
+
+
 @login_required
 def favorites(request):
 
     return JsonResponse({'success': 'true'})
 
 
+def single_recipe(request, slug):
+    recipe = get_object_or_404(Recipe, slug)
+
+    pass
+
+
+@login_required
+def new_recipe(request):
+    form = RecipeForm()
+    if request.method == 'POST':
+        form = RecipeForm(request.POST)
+        if form.is_valid():
+            form.instance.author = request.user
+            form.save()
+            return redirect('index')
+    return render(request, 'new_recipe.html', {'form': form})
+
+
+@login_required
+def shop_list(request):
+
+    return render(
+        request,
+        'shop_list.html',
+        {
+
+        }
+    )
+
+
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    recipe = author.recipe.all()
-    paginator = Paginator(recipe, 10)
+    recipes = author.recipe.all()
+
+    paginator = Paginator(recipes, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
+
     if request.user.is_authenticated:
         user = request.user
         if Follow.objects.filter(user=user, author=author).exists():
@@ -90,9 +117,10 @@ def profile(request, username):
         return render(request, 'profile.html', context)
     return render(
         request,
-        'index.html',
+        'profile.html',
         {'page': page, 'paginator': paginator, 'author': author}
     )
+
 
 
 @login_required

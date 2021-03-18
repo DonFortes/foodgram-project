@@ -67,14 +67,15 @@ class Recipe(models.Model):
         verbose_name='Время приготовления'
         )
     slug = models.SlugField(
-        unique=True, verbose_name='Ссылка'
+        unique=True, verbose_name='Ссылка',
+        blank=True, default='',
         )
     is_favorite = models.ManyToManyField(
-        User, related_name='recipe_favorite',
+        User, related_name='favorite',
         blank=True, verbose_name='Избранное',
         )
     basket = models.ManyToManyField(
-        User, related_name='recipe_basket',
+        User, related_name='basket',
         blank=True, verbose_name='Корзина',
         )
 

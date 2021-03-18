@@ -1,17 +1,16 @@
 <div class="card" data-id="120">
-    <a href="#" class="link" target="_blank"><img src="/static/images/testCardImg.png" alt="Какой-то текст"
+    <a href="#" class="link" target="_blank"><img src="{{ recipe.image.url }}" alt="Тут картинка"
             class="card__image"></a>
     <div class="card__body">
-        <a class="card__title link" href="#" target="_blank">Французские тосты</a>
+        <a class="card__title link" href="{% url "slug" recipe.slug %}" target="_blank">{{ recipe.name }}</a>
         <ul class="card__items">
             <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
             <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
             <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
         </ul>
         <div class="card__items card__items_column">
-            <p class="card__text"><span class="icon-time"></span> 20 мин.</p>
-            <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">Вероника
-                    Чернова!!</a></p>
+            <p class="card__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
+            <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">{{ recipe.author }}</a></p>
         </div>
     </div>
     <div class="card__footer">

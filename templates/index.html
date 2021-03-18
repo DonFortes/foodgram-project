@@ -5,7 +5,7 @@
 {% include 'includes/header.html' with index=True %}
 
 <main class="main container">
-{% csrf_token %}
+    {% csrf_token %}
     <div class="main__header">
         <h1 class="main__title">Главная</h1>
 
@@ -16,7 +16,7 @@
 
     <div class="card-list">
         <!-- card.html -->
-        {% for x in '0123456789'|make_list %}
+        {% for recipe in page %}
         {% include 'includes/card.html' %}
         {% endfor %}
         <!-- /card -->

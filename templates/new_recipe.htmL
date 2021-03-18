@@ -13,11 +13,14 @@
 
     <div class="form-container">
         <form class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.errors }}
             <div class="form__group">
                 <label for="id_name" class="form__label">Название рецепта</label>
                 <div class="form__field-group">
-                    <input type="text" id="id_name" name="name" class="form__input">
-                    <span class="form__error"></span>
+                    <input type="text" id="id_name" name="name" class="form__input"
+                        value="{{ form.name.value|default:'' }}">
+                    <span class="form__error">{{ form.name.errors }}</span>
                 </div>
             </div>
 
@@ -47,11 +50,12 @@
 
 
             <div class="form__group">
-                <label for="id_time" class="form__label">Время приготовления</label>
+                <label for="id_cook_time" class="form__label">Время приготовления</label>
                 <div class="form__field-group form__field-group_time">
-                    <input type="text" id="id_time" name="name" class="form__input">
-                    <label for="id_time" class="form__label">минут</label>
-                    <span class="form__error"></span>
+                    <input type="text" id="id_cook_time" name="cook_time" class="form__input">
+                    <label for="id_cook_time" class="form__label">минут</label>
+                    <span class="form__error">{{ form.cook_time.errors }}</span>
+
                 </div>
             </div>
 
@@ -60,7 +64,7 @@
                 <label for="id_description" class="form__label">Описание</label>
                 <div class="form__field-group">
                     <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>
-                    <span class="form__error"></span>
+                    <span class="form__error">{{ form.description.errors }}</span>
                 </div>
             </div>
 
@@ -68,16 +72,20 @@
             <div class="form__group">
                 <span class="form__label">Загрузить фото</span>
                 <div class="form__field-group">
-                    <input type="file" name="file" id="id_file">
-                    <span class="form__error"></span>
+                    <input type="file" name="image" id="id_image">
+                    {{ form.image }}
+                    <span class="form__error">{{ form.image.errors }}</span>
                 </div>
             </div>
+    </div>
 
 
-            <div class="form__footer">
-                <button class="button button_style_blue">Создать рецепт</button>
-            </div>
-        </form>
+    <div class="form__footer">
+        <button class="button button_style_blue">Создать рецепт</button>
+    </div>
+
+
+    </form>
     </div>
 
 
