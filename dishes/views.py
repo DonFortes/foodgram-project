@@ -25,51 +25,6 @@ def index(request):
 
 
 @login_required
-# @require_http_methods("POST")
-def purchases(request):
-
-    recipe_id = int(json.loads(request.body).get('id'))
-    recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if request.user not in recipe.basket.all():
-        recipe.basket.add(request.user)
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
-
-
-@login_required
-def subscriptions(request, id=None):
-    if request.method == 'POST':
-        author = get_object_or_404(User, pk=id)
-        user = request.user
-        if author != user:
-            Follow.objects.get_or_create(
-                user=user,
-                author=author,
-            )
-    elif request.method == 'DELETE':
-        author = get_object_or_404(User, pk=id)
-        user = request.user
-        Follow.objects.filter(user=user, author=author).delete()
-
-    return JsonResponse({'success': 'true'})
-
-
-
-
-
-@login_required
-def favorites(request):
-
-    return JsonResponse({'success': 'true'})
-
-
-def single_recipe(request, slug):
-    recipe = get_object_or_404(Recipe, slug)
-
-    pass
-
-
-@login_required
 def new_recipe(request):
     form = RecipeForm()
     if request.method == 'POST':
