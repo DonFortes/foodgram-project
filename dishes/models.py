@@ -79,8 +79,13 @@ class Recipe(models.Model):
         blank=True, verbose_name='Корзина',
         )
 
+    class Meta:
+        ordering = ['-pub_date']
+        verbose_name = 'рецепт'
+        verbose_name_plural = 'рецепты'
+
     def __str__(self):
-        return self.name
+        return f'Рецепт {self.name} от {self.author.username}'
 
 
 class Volume(models.Model):

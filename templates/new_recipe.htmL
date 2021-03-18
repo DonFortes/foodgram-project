@@ -3,7 +3,7 @@
 {% block main_css %}/static/pages/form.css{% endblock main_css %}
 
 {% block content %}
-{% include 'includes/header.html' with index=True %}
+{% include 'includes/header.html' with new_recipe=True %}
 
 <main class="main container">
 
@@ -72,21 +72,19 @@
             <div class="form__group">
                 <span class="form__label">Загрузить фото</span>
                 <div class="form__field-group">
-                    <input type="file" name="image" id="id_image">
-                    {{ form.image }}
-                    <span class="form__error">{{ form.image.errors }}</span>
+
+                    <label for="id_file" class="form__file-button">Выбрать изображение</label>
+                    <input type="file" class="form__file" name="image" id="id_file" value="">
+                    <span class="form__error"></span>
                 </div>
             </div>
+
+            <div class="form__footer">
+                <button class="button button_style_blue">Создать рецепт</button>
+            </div>
+
     </div>
-
-
-    <div class="form__footer">
-        <button class="button button_style_blue">Создать рецепт</button>
-    </div>
-
-
     </form>
-    </div>
 
 
 </main>
