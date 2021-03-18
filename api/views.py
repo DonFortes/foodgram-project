@@ -20,9 +20,9 @@ def purchases(request):
         if request.user not in recipe.basket.all():
             recipe.basket.add(request.user)
             recipe.save()
-        return JsonResponse({'success': True})
-    else:
-        return JsonResponse({'success': False})
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False})
 
 
 @login_required
