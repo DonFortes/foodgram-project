@@ -36,16 +36,21 @@ def new_recipe(request):
     return render(request, 'new_recipe.html', {'form': form})
 
 
-@login_required
-def shop_list(request):
+# @login_required
+# def shop_list(request):
 
-    return render(
-        request,
-        'shop_list.html',
-        {
+#     return render(
+#         request,
+#         'shop_list.html',
+#         {
 
-        }
-    )
+#         }
+#     )
+
+
+def single_recipe(request, slug):
+
+    pass
 
 
 def profile(request, username):

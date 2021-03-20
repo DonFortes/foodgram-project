@@ -1,21 +1,22 @@
-from . import views
+from api import views
 from django.urls import path
 
-urlpatterns = [ 
-    path("purchases/", views.purchases, name="purchases"),
+
+urlpatterns = [
+    path('purchases/', views.purchases, name='purchases'),
     path(
-        "purchases/<int:recipe_id>/", views.purchases_remove,
-        name="purchases_remove"
+        'purchases/<int:recipe_id>/', views.purchases,
+        name='purchases_delete'
         ),
-    path("subscriptions/", views.subscriptions, name="subscriptions"),
+    path('subscriptions/', views.subscriptions, name='subscriptions'),
     path(
-        "subscriptions/<int:user_id>/", views.subscriptions,
-        name="subscriptions"
+        'subscriptions/<int:user_id>/', views.subscriptions,
+        name='subscriptions_delete'
         ),
-    path("favorites/", views.favorites, name="favorites"),
+    path('favorites/', views.favorites, name='favorites'),
     path(
-        "favorites/<int:recipe_id>/", views.favorites_remove,
-        name="favorites_remove"
+        'favorites/<int:recipe_id>/', views.favorites,
+        name=f'avorites_delete'
         ),
-    path("ingredients/", views.ingredients, name="ingredients"),
+    # path('ingredients/', views.ingredients, name='ingredients'),
 ]
