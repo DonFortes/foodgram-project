@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+# from django.utils.text import slugify
+from autoslug import AutoSlugField
 
 
 User = get_user_model()
@@ -66,9 +68,9 @@ class Recipe(models.Model):
     cook_time = models.IntegerField(
         verbose_name='Время приготовления'
         )
-    slug = models.SlugField(
-        unique=True, verbose_name='Ссылка',
-        blank=True, default='',
+    slug = AutoSlugField(
+        populate_from="name", allow_unicode=True, unique=True,
+        editable=True, verbose_name="ссылка", blank=True,
         )
     is_favorite = models.ManyToManyField(
         User, related_name='favorite',
@@ -78,6 +80,10 @@ class Recipe(models.Model):
         User, related_name='basket',
         blank=True, verbose_name='Корзина',
         )
+
+    # def save(self, *args, **kwargs):
+    #     self.slug = slugify(self.name)
+    #     super(Recipe, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['-pub_date']
