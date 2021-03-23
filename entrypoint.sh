@@ -3,9 +3,9 @@
 sleep 2
 python manage.py makemigrations api dishes users
 python manage.py makemigrations
-python manage.py migrate
 python manage.py migrate api dishes users
-python manage.py createcachetable
+python manage.py migrate
+# python manage.py createcachetable
 
 if [ "$DJANGO_SUPERUSER_USERNAME" ]; then
   python manage.py createsuperuser \

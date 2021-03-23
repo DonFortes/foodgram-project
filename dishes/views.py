@@ -53,7 +53,7 @@ def profile(request, username):
     )
 
 
-@login_required
+# @login_required
 def new_recipe(request):
     form = RecipeForm()
     if request.method == 'POST':
@@ -91,6 +91,3 @@ def delete_recipe(request, slug):
 def following(request, slug):
 
     pass
-
-
-
