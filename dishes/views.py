@@ -56,7 +56,6 @@ def profile(request, username):
 @login_required
 def new_recipe(request):
     form = RecipeForm()
-
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():

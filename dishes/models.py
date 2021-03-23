@@ -1,11 +1,24 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.text import slugify
+from django.utils.text import slugify as django_slugify
 # from autoslug import AutoSlugField
 # from uuslug import slugify
 
 
 User = get_user_model()
+
+
+alphabet = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+            'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+            'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ы': 'i', 'э': 'e', 'ю': 'yu',
+            'я': 'ya'}
+
+
+def slugify(s):
+    """
+    Overriding django slugify that allows to use russian words as well.
+    """
+    return django_slugify(''.join(alphabet.get(w, w) for w in s.lower()))
 
 
 class Ingredient(models.Model):
@@ -73,10 +86,6 @@ class Recipe(models.Model):
         unique=True, verbose_name='Ссылка',
         blank=True, default='',
         )
-    # slug = AutoSlugField(
-    #     populate_from="name", allow_unicode=True, unique=True,
-    #     editable=True, verbose_name="ссылка", blank=True,
-    #     )
     is_favorite = models.ManyToManyField(
         User, related_name='favorite',
         blank=True, verbose_name='Избранное',
@@ -84,24 +93,12 @@ class Recipe(models.Model):
     basket = models.ManyToManyField(
         User,
         related_name='basket',
-        # through='Basket',
         blank=True,
         verbose_name='Корзина',
         )
 
-    # def save(self, *args, **kwargs):
-    #     self.slug = uuslug(self.name, instance=self)
-    #     super(Recipe, self).save(*args, **kwargs)
-
-
-    # my_string = str(slug).translate(
-    #     str.maketrans(
-    #         "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
-    #         "abvgdeejzijklmnoprstufhzcss_y_euaABVGDEEJZIJKLMNOPRSTUFHZCSS_Y_EUA"
-    #     ))
-
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.my_string)
+        self.slug = slugify(self.name)
         super(Recipe, self).save(*args, **kwargs)
 
     class Meta:
