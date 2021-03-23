@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-# from django.utils.text import slugify
-from autoslug import AutoSlugField
+from django.utils.text import slugify
+# from autoslug import AutoSlugField
+# from uuslug import slugify
 
 
 User = get_user_model()
@@ -68,10 +69,14 @@ class Recipe(models.Model):
     cook_time = models.IntegerField(
         verbose_name='Время приготовления'
         )
-    slug = AutoSlugField(
-        populate_from="name", allow_unicode=True, unique=True,
-        editable=True, verbose_name="ссылка", blank=True,
+    slug = models.SlugField(
+        unique=True, verbose_name='Ссылка',
+        blank=True, default='',
         )
+    # slug = AutoSlugField(
+    #     populate_from="name", allow_unicode=True, unique=True,
+    #     editable=True, verbose_name="ссылка", blank=True,
+    #     )
     is_favorite = models.ManyToManyField(
         User, related_name='favorite',
         blank=True, verbose_name='Избранное',
@@ -82,8 +87,19 @@ class Recipe(models.Model):
         )
 
     # def save(self, *args, **kwargs):
-    #     self.slug = slugify(self.name)
+    #     self.slug = uuslug(self.name, instance=self)
     #     super(Recipe, self).save(*args, **kwargs)
+
+
+    # my_string = str(slug).translate(
+    #     str.maketrans(
+    #         "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+    #         "abvgdeejzijklmnoprstufhzcss_y_euaABVGDEEJZIJKLMNOPRSTUFHZCSS_Y_EUA"
+    #     ))
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.my_string)
+        super(Recipe, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['-pub_date']

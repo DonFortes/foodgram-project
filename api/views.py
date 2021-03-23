@@ -24,8 +24,8 @@ def purchases(request):
             else:
                 return JsonResponse({'success': False})
     elif request.method == 'DELETE':
-
-            pass
+        
+        pass
 
 
 @login_required
