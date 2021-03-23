@@ -82,8 +82,11 @@ class Recipe(models.Model):
         blank=True, verbose_name='Избранное',
         )
     basket = models.ManyToManyField(
-        User, related_name='basket',
-        blank=True, verbose_name='Корзина',
+        User,
+        related_name='basket',
+        # through='Basket',
+        blank=True,
+        verbose_name='Корзина',
         )
 
     # def save(self, *args, **kwargs):

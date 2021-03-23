@@ -27,12 +27,15 @@ def index(request):
 @login_required
 def new_recipe(request):
     form = RecipeForm()
+    
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
             form.instance.author = request.user
             form.save()
+            print(form)
             return redirect('index')
+    print(request)
     return render(request, 'new_recipe.html', {'form': form})
 
 

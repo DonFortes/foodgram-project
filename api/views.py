@@ -7,25 +7,42 @@ from django.views.decorators.http import require_http_methods
 
 
 @login_required
+@require_http_methods("POST")
 def purchases(request):
-    if request.method == 'POST':
-        recipe_id = json.loads(request.body).get('id')
-        if recipe_id is None:
-            return JsonResponse({"success": False})
-        recipe_id = int(recipe_id)
+    recipe_id = json.loads(request.body).get('id')
+    if recipe_id is None:
+        return JsonResponse({"success": False})
+    recipe_id = int(recipe_id)
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
 
-        if request.user.is_authenticated:
-            recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if request.user not in recipe.basket.all():
+        recipe.basket.add(request.user)
+        recipe.save()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
 
-            if request.user not in recipe.basket.all():
-                recipe.basket.add(request.user)
-                recipe.save()
-                return JsonResponse({'success': True})
-            else:
-                return JsonResponse({'success': False})
-    elif request.method == 'DELETE':
+
+@login_required
+@require_http_methods("DELETE")
+def purchases_delete(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if request.user in recipe.basket.all():
+        # recipe.basket.filter(user=request.user, recipe=recipe).delete()
         
-        pass
+
+    recipe_id = json.loads(request.body).get('id')
+    if recipe_id is None:
+        return JsonResponse({"success": False})
+    recipe_id = int(recipe_id)
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+
+    if request.user not in recipe.basket.all():
+        recipe.basket.add(request.user)
+        recipe.save()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
 
 
 @login_required
