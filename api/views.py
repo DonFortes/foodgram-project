@@ -28,21 +28,8 @@ def purchases(request):
 def purchases_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.user in recipe.basket.all():
-        # recipe.basket.filter(user=request.user, recipe=recipe).delete()
-        
-
-    recipe_id = json.loads(request.body).get('id')
-    if recipe_id is None:
-        return JsonResponse({"success": False})
-    recipe_id = int(recipe_id)
-    recipe = get_object_or_404(Recipe, pk=recipe_id)
-
-    if request.user not in recipe.basket.all():
-        recipe.basket.add(request.user)
-        recipe.save()
+        recipe.basket.remove(request.user)
         return JsonResponse({'success': True})
-    else:
-        return JsonResponse({'success': False})
 
 
 @login_required
