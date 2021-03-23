@@ -10,7 +10,7 @@ urlpatterns = [
         ),
     path('subscriptions/', views.subscriptions, name='subscriptions'),
     path(
-        'subscriptions/<int:user_id>/', views.subscriptions,
+        'subscriptions/<int:author_id>/', views.subscriptions_delete,
         name='subscriptions_delete'
         ),
     path('favorites/', views.favorites, name='favorites'),

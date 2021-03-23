@@ -24,38 +24,6 @@ def index(request):
     )
 
 
-@login_required
-def new_recipe(request):
-    form = RecipeForm()
-    
-    if request.method == 'POST':
-        form = RecipeForm(request.POST)
-        if form.is_valid():
-            form.instance.author = request.user
-            form.save()
-            print(form)
-            return redirect('index')
-    print(request)
-    return render(request, 'new_recipe.html', {'form': form})
-
-
-# @login_required
-# def shop_list(request):
-
-#     return render(
-#         request,
-#         'shop_list.html',
-#         {
-
-#         }
-#     )
-
-
-def single_recipe(request, slug):
-
-    pass
-
-
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     recipes = author.recipe.all()
@@ -85,12 +53,45 @@ def profile(request, username):
     )
 
 
-
 @login_required
-def profile_follow(request, username):
+def new_recipe(request):
+    form = RecipeForm()
+
+    if request.method == 'POST':
+        form = RecipeForm(request.POST)
+        if form.is_valid():
+            form.instance.author = request.user
+            form.save()
+            print(form)
+            return redirect('index')
+    print(request)
+    return render(request, 'new_recipe.html', {'form': form})
+
+
+def single_recipe(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug)
+    return render(
+        request,
+        "recipe/single_page.html",
+        {
+            'recipe': recipe
+        }
+    )
+
+
+def edit_recipe(request, slug):
+
     pass
 
 
-@login_required
-def profile_unfollow(request, username):
+def delete_recipe(request, slug):
+
     pass
+
+
+def following(request, slug):
+
+    pass
+
+
+
