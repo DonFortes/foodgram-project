@@ -69,13 +69,7 @@ def new_recipe(request):
 
 def single_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    return render(
-        request,
-        "recipe/single_page.html",
-        {
-            'recipe': recipe
-        }
-    )
+    return render(request, "single_recipe.html", {'recipe': recipe})
 
 
 def edit_recipe(request, slug):
