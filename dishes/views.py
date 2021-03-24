@@ -57,7 +57,7 @@ def profile(request, username):
 def new_recipe(request):
     form = RecipeForm()
     if request.method == 'POST':
-        form = RecipeForm(request.POST)
+        form = RecipeForm(request.POST or None)
         if form.is_valid():
             form.instance.author = request.user
             form.save()
@@ -72,11 +72,23 @@ def single_recipe(request, slug):
     return render(request, "single_recipe.html", {'recipe': recipe})
 
 
+@login_required
 def edit_recipe(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug)
+    form = RecipeForm(
+        request.POST or None, files=request.FILES or None, instance=recipe
+        )
+    url = reverse('single_recipe', slug=slug)
 
-    pass
+    if recipe.author != request.user:
+        return redirect(url)
+
+    if form.is_valid():
+        form.save()
+        return redirect(url)
 
 
+@login_required
 def delete_recipe(request, slug):
 
     pass

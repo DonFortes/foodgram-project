@@ -35,7 +35,7 @@
                         <p class="single-card__text"><span class="icon-user"></span> {{ recipe.author }}</p>
                     </li>
                     <li class="single-card__item"> <a style="margin-left: 2.5em" href="#"
-                            class="single-card__text">Редактировать рецепт</a></li>
+                            class="single-card__text">"{% url 'edit_recipe' recipe.slug %}"</a></li>
                 </ul>
             </div>
 
@@ -58,9 +58,7 @@
 
             <div class="single-card__section">
                 <h3 class="single-card__section-title">Описание:</h3>
-                <p class=" single-card__section-text">Смешать молоко с сахаром, добавить яйца, тщательно все взбить.
-                    Обмакнуть тосты в смесь и жарить на сливочном масле до золотистой корочки.</p>
-                <p class=" single-card__section-text">Полить сверху сиропом топинамбура и украсить ягодами.</p>
+                <p class=" single-card__section-text">{{ recipe.description }}</p>
             </div>
         </div>
     </div>
