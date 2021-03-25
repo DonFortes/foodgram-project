@@ -14,8 +14,7 @@ def purchases(request):
     if request.user not in recipe.basket.all():
         recipe.basket.add(request.user)
         return JsonResponse({'success': True})
-    else:
-        return JsonResponse({'success': False})
+    return JsonResponse({'success': False})
 
 
 @login_required
@@ -55,8 +54,12 @@ def subscriptions_delete(request, author_id):
 
 @login_required
 def favorites(request):
-    
-    return JsonResponse({'success': 'true'})
+    recipe_id = int(json.loads(request.body).get('id'))
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if request.user not in recipe.basket.all():
+        recipe.basket.add(request.user)
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 
 def single_recipe(request, slug):

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Single page{% endblock %}
+{% block title %}Страница рецепта{% endblock %}
 {% block main_css %}/static/pages/single.css{% endblock main_css %}
 
 {% block content %}
@@ -7,7 +7,7 @@
 
 <main class="main container">
 
-    <div class="single-card" data-id="371" data-author="12">
+    <div class="single-card" data-id="{{ recipe.id }}" data-author="12">
         <img src="{{ recipe.image.url }}" alt="какой-то текст" class="single-card__image">
         <div class="single-card__info">
             <div class="single-card__header-info">
@@ -34,8 +34,15 @@
                     <li class="single-card__item">
                         <p class="single-card__text"><span class="icon-user"></span> {{ recipe.author }}</p>
                     </li>
-                    <li class="single-card__item"> <a style="margin-left: 2.5em" href="#"
-                            class="single-card__text">"{% url 'edit_recipe' recipe.slug %}"</a></li>
+                    {% if user.is_authenticated %}
+                    {% if request.user == recipe.author %}
+                    <li class="single-card__item">
+                        <a style="margin-left: 2.5em" href="#" class="single-card__text">
+                            "{% url 'edit_recipe' recipe.slug %}"
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
                 </ul>
             </div>
 
@@ -52,7 +59,7 @@
                     {% for item in recipe.ingredients.all %}
                     <p class=" single-card__section-item">{{ item.name }} {{ item.measure }}</p>
                     {% endfor %}
-                    
+
                 </div>
             </div>
 

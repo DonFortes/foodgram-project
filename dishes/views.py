@@ -75,13 +75,16 @@ def single_recipe(request, slug):
 @login_required
 def edit_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    form = RecipeForm(
-        request.POST or None, files=request.FILES or None, instance=recipe
-        )
-    url = reverse('single_recipe', slug=slug)
+    url = reverse('single_recipe', args={"slug": slug})
 
     if recipe.author != request.user:
         return redirect(url)
+
+    form = RecipeForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=recipe
+        )
 
     if form.is_valid():
         form.save()
@@ -94,6 +97,6 @@ def delete_recipe(request, slug):
     pass
 
 
-def following(request, slug):
+def subscriptions(request, slug):
 
     pass
