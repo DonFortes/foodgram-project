@@ -7,7 +7,7 @@
 
 <main class="main container">
 
-    <div class="single-card" data-id="{{ recipe.id }}" data-author="12">
+    <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ recipe.author.pk }}">
         <img src="{{ recipe.image.url }}" alt="какой-то текст" class="single-card__image">
         <div class="single-card__info">
             <div class="single-card__header-info">
@@ -37,9 +37,8 @@
                     {% if user.is_authenticated %}
                     {% if request.user == recipe.author %}
                     <li class="single-card__item">
-                        <a style="margin-left: 2.5em" href="#" class="single-card__text">
-                            "{% url 'edit_recipe' recipe.slug %}"
-                        </a>
+                        <a style="margin-left: 2.5em" href="{% url 'edit_recipe' recipe.slug %}"
+                        class="single-card__text">Редактировать</a>
                     </li>
                     {% endif %}
                     {% endif %}

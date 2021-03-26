@@ -29,27 +29,27 @@ def purchases_delete(request, recipe_id):
 @login_required
 @require_http_methods("POST")
 def subscriptions(request):
-    # author_id = int(json.loads(request.body).get("id"))
-    # author = get_object_or_404(pk=author_id)
-    # user = request.user
-    # # if author != user:
-    # Follow.objects.get_or_create(
-    #     user=user,
-    #     author=author
-    # )
-    return JsonResponse({'success': True})
-    # return JsonResponse({"success": False})
+    author_id = int(json.loads(request.body).get("id"))
+    author = get_object_or_404(User, pk=author_id)
+    user = request.user
+    if author != user:
+        Follow.objects.get_or_create(
+            user=user,
+            author=author
+        )
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 
 @login_required
 @require_http_methods("DELETE")
 def subscriptions_delete(request, author_id):
-    author = get_object_or_404(pk=author_id)
+    author = get_object_or_404(User, pk=author_id)
     user = request.user
     if Follow.objects.filter(user=user, author=author).exists():
         Follow.objects.filter(user=user, author=author).delete()
-        return JsonResponse({'success': 'true'})
-    return JsonResponse({"success": False})
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 
 @login_required
