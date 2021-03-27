@@ -38,7 +38,7 @@
                     {% if request.user == recipe.author %}
                     <li class="single-card__item">
                         <a style="margin-left: 2.5em" href="{% url 'edit_recipe' recipe.slug %}"
-                        class="single-card__text">Редактировать</a>
+                            class="single-card__text">Редактировать</a>
                     </li>
                     {% endif %}
                     {% endif %}
@@ -48,8 +48,12 @@
             <ul class="single-card__items">
                 <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span
                             class="icon-plus"></span> Добавить в покупки</button></li>
+                            {% if user.is_authenticated %}
+                            {% if request.user != recipe.author %}
                 <li class="single-card__item"><button class="button button_style_light-blue button_size_subscribe"
                         name="subscribe" data-out>Подписаться на автора</button></li>
+                        {% endif %}
+                        {% endif %}
             </ul>
 
             <div class="single-card__section">
