@@ -57,7 +57,7 @@ def profile(request, username):
 def new_recipe(request):
     form = RecipeForm()
     if request.method == 'POST':
-        form = RecipeForm(request.POST or None)
+        form = RecipeForm(request.POST or None, files=request.FILES or None)
         if form.is_valid():
             form.instance.author = request.user
             form.save()
@@ -90,6 +90,8 @@ def edit_recipe(request, slug):
         form.save()
         return redirect(url)
 
+    return redirect(url)
+
 
 @login_required
 def delete_recipe(request, slug):
@@ -97,6 +99,18 @@ def delete_recipe(request, slug):
     pass
 
 
-def subscriptions(request, slug):
+@login_required
+def follows(request):
+    recipe_list = Recipe.objects.filter(author__following__user=request.user)
 
-    pass
+    paginator = Paginator(recipe_list, 3)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    return render(
+        request,
+        'index.html',
+        {
+            'page': page, 'paginator': paginator
+            }
+    )
