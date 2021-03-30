@@ -13,7 +13,7 @@
         <div class="card__items card__items_column">
             <p class="card__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
             <p class="card__text"><span class="icon-user"></span>
-                <a href="{% url 'single_recipe' recipe.author.username %}" style="color: black">{{ recipe.author.username }}</a>
+                <a href="{% url 'profile' recipe.author.username %}" style="color: black">{{ recipe.author.username }}</a>
             </p>
         </div>
     </div>

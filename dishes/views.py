@@ -26,31 +26,40 @@ def index(request):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    recipes = author.recipe.all()
+    recipe_list = author.recipe.all()
 
-    paginator = Paginator(recipes, 10)
+    paginator = Paginator(recipe_list, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-    if request.user.is_authenticated:
-        user = request.user
-        if Follow.objects.filter(user=user, author=author).exists():
-            following = True
-        else:
-            following = False
-        context = {
-            'author': author,
-            'page': page,
-            'paginator': paginator,
-            'following': following,
-            'username': author,
-        }
-        return render(request, 'profile.html', context)
     return render(
         request,
         'profile.html',
-        {'page': page, 'paginator': paginator, 'author': author}
+        {
+            "page": page,
+            "paginator": paginator,
+            "author": author,
+        }
     )
+
+    # if request.user.is_authenticated:
+    #     if Follow.objects.filter(user=request.user, author=author).exists():
+    #         following = True
+    #     else:
+    #         following = False
+    #     context = {
+    #         'author': author,
+    #         'page': page,
+    #         'paginator': paginator,
+    #         'following': following,
+    #         'username': author,
+    #     }
+    #     return render(request, 'profile.html', context)
+    # return render(
+    #     request,
+    #     'profile.html',
+    #     {'page': page, 'paginator': paginator, 'author': author}
+    # )
 
 
 # @login_required
@@ -109,7 +118,7 @@ def follows(request):
 
     return render(
         request,
-        'index.html',
+        'follows.html',
         {
             'page': page, 'paginator': paginator
             }

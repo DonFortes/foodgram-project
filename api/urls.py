@@ -15,8 +15,7 @@ urlpatterns = [
         ),
     path('favorites/', views.favorites, name='favorites'),
     path(
-        'favorites/<int:recipe_id>/', views.favorites,
+        'favorites/<int:recipe_id>/', views.favorites_delete,
         name='favorites_delete'
         ),
-    # path('ingredients/', views.ingredients, name='ingredients'),
 ]

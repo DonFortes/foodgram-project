@@ -1,32 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Рецепты автора{% endblock %}
+{% block title %}Главная{% endblock %}
 
 {% block content %}
-{% include 'includes/header.html'%}
+{% include 'includes/header.html' with subscribe=True %}
 
 <main class="main container">
-
     <div class="main__header">
-        <h1 class="main__title">{{ author }}</h1>
+        <h1 class="main__title">Главная</h1>
 
         <!-- tags.html -->
         {% include 'includes/tags.html' %}
         <!-- /tags -->
     </div>
-
-    {% if following %}
-
-
-
-
-    {% else %}
-    <!-- <p style="padding: 0 0 2em 0;"><a class="button button_style_light-blue" href="#">Подписаться на автора</a></p> -->
-    <div class="author-subscribe" data-author="323">
-        <p style="padding: 0 0 2em 0;">
-            <button class="button button_style_light-blue button_size_subscribe"
-                name="subscribe" data-out>Подписаться на автора</button></p>
-    </div>
-    {% endif %}
 
     <div class="card-list">
         <!-- card.html -->
@@ -45,15 +30,17 @@
 
 {% block js %}
 <script src="/static/js/components/MainCards.js"></script>
-
 <script src="/static/js/components/Purchases.js"></script>
+{% if user.is_authenticated %}
 <script src="/static/js/components/Favorites.js"></script>
-<script src="/static/js/components/Subscribe.js"></script>
-
+{% endif %}
 <script src="/static/js/config/config.js"></script>
-<script src="/static/js/components/AuthorRecipe.js"></script>
+<script src="/static/js/components/CardList.js"></script>
 <script src="/static/js/components/Header.js"></script>
-
 <script src="/static/js/api/Api.js"></script>
-<script src="/static/authorRecipe.js"></script>
+{% if user.is_authenticated %}
+<script src="/static/indexAuth.js"></script>
+{% else %}
+<script src="/static/indexNotAuth.js"></script>
+{% endif %}
 {% endblock %}

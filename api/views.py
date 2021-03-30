@@ -64,12 +64,16 @@ def subscriptions_delete(request, author_id):
 def favorites(request):
     recipe_id = int(json.loads(request.body).get('id'))
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if request.user not in recipe.basket.all():
-        recipe.basket.add(request.user)
+    if request.user not in recipe.is_favorite.all():
+        recipe.is_favorite.add(request.user)
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
 
 
-def single_recipe(request, slug):
-
-    return JsonResponse({'success': 'true'})
+@login_required
+def favorites_delete(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if request.user in recipe.is_favorite.all():
+        recipe.basket.remove(request.user)
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
