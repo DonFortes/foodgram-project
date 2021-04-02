@@ -66,14 +66,21 @@ def profile(request, username):
 def new_recipe(request):
     form = RecipeForm()
     if request.method == 'POST':
-        form = RecipeForm(request.POST or None, files=request.FILES or None)
+        form = RecipeForm(
+            request.POST or None,
+            files=request.FILES or None
+            )
         if form.is_valid():
             form.instance.author = request.user
             form.save()
             print(form)
             return redirect('index')
     print(request)
-    return render(request, 'new_recipe.html', {'form': form})
+    return render(
+        request,
+        'new_recipe.html',
+        {'form': form}
+        )
 
 
 def single_recipe(request, slug):
@@ -118,7 +125,7 @@ def follows(request):
 
     return render(
         request,
-        'follows.html',
+        'subscriptions.html',
         {
             'page': page, 'paginator': paginator
             }

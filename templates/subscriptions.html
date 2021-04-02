@@ -10,11 +10,11 @@
     <div class="main__header">
         <h1 class="main__title">Мои подписки</h1>
     </div>
-
+    {% for recipe in page %}
     <div class="card-list">
-        <div class="card-user" data-author="700">
+        <div class="card-user" data-author="{{ recipe.author.pk }}">
             <div class="card-user__header">
-                <h2 class="card-user__title">Вероника Чернова</h2>
+                <h2 class="card-user__title">{{ recipe.author.username }}</h2>
             </div>
 
             <div class="card-user__body">
@@ -23,24 +23,24 @@
                     <li class="card-user__item">
                         <div class="recipe">
                             <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
+                            <h3 class="recipe__title">{{ recipe.name }}</h3>
+                            <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
                         </div>
                     </li>
 
                     <li class="card-user__item">
                         <div class="recipe">
                             <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
+                            <h3 class="recipe__title">{{ recipe.name }}</h3>
+                            <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
                         </div>
                     </li>
 
                     <li class="card-user__item">
                         <div class="recipe">
                             <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
+                            <h3 class="recipe__title">{{ recipe.name }}</h3>
+                            <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
                         </div>
                     </li>
 
@@ -48,93 +48,6 @@
                         <a href="#" class="card-user__link link">Еще 7 рецептов...</a>
                     </li>
 
-                </ul>
-            </div>
-
-            <div class="card-user__footer">
-                <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
-            </div>
-        </div>
-
-        <div class="card-user" data-author="707">
-
-            <div class="card-user__header">
-                <h2 class="card-user__title">Вероника Чернова</h2>
-            </div>
-
-            <div class="card-user__body">
-                <ul class="card-user__items">
-                    <li class="card-user__item">
-                        <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                        </div>
-                    </li>
-
-                    <li class="card-user__item">
-                        <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                        </div>
-                    </li>
-
-                    <li class="card-user__item">
-                        <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                        </div>
-                    </li>
-
-                    <li class="card-user__item">
-                        <a href="#" class="card-user__link link">Еще 7 рецептов...</a>
-                    </li>
-
-                </ul>
-            </div>
-
-            <div class="card-user__footer">
-                <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
-            </div>
-        </div>
-
-        <div class="card-user" data-author="7091">
-            <div class="card-user__header">
-                <h2 class="card-user__title">Вероника Чернова</h2>
-            </div>
-
-            <div class="card-user__body">
-                <ul class="card-user__items">
-
-                    <li class="card-user__item">
-                        <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                        </div>
-                    </li>
-
-                    <li class="card-user__item">
-                        <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                        </div>
-                    </li>
-
-                    <li class="card-user__item">
-                        <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">Французские тосты</h3>
-                            <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                        </div>
-                    </li>
-
-                    <li class="card-user__item">
-                        <a href="#" class="card-user__link link">Еще 7 рецептов...</a>
-                    </li>
                 </ul>
             </div>
 
@@ -143,6 +56,7 @@
             </div>
         </div>
     </div>
+    {% endfor %}
 
 
     <!-- pagination -->
