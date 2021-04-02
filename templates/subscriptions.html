@@ -10,39 +10,25 @@
     <div class="main__header">
         <h1 class="main__title">Мои подписки</h1>
     </div>
-    {% for recipe in page %}
+    {% for author in page %}
     <div class="card-list">
-        <div class="card-user" data-author="{{ recipe.author.pk }}">
+        <div class="card-user" data-author="{{ author.id }}">
             <div class="card-user__header">
-                <h2 class="card-user__title">{{ recipe.author.username }}</h2>
+                <h2 class="card-user__title">{{ author.username }}</h2>
             </div>
 
             <div class="card-user__body">
                 <ul class="card-user__items">
-
+                    {% for recipe in author.recipe.all %}
                     <li class="card-user__item">
                         <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                            <img src='{{ recipe.image.url }}' alt="какой-то-текст" class="recipe__image">
                             <h3 class="recipe__title">{{ recipe.name }}</h3>
                             <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
                         </div>
                     </li>
-
-                    <li class="card-user__item">
-                        <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">{{ recipe.name }}</h3>
-                            <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
-                        </div>
-                    </li>
-
-                    <li class="card-user__item">
-                        <div class="recipe">
-                            <img src="/static/images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                            <h3 class="recipe__title">{{ recipe.name }}</h3>
-                            <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
-                        </div>
-                    </li>
+                    {% endfor %}
+                    
 
                     <li class="card-user__item">
                         <a href="#" class="card-user__link link">Еще 7 рецептов...</a>

@@ -117,9 +117,9 @@ def delete_recipe(request, slug):
 
 @login_required
 def follows(request):
-    recipe_list = Recipe.objects.filter(author__following__user=request.user)
+    authors = User.objects.filter(following__user=request.user)
 
-    paginator = Paginator(recipe_list, 3)
+    paginator = Paginator(authors, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
