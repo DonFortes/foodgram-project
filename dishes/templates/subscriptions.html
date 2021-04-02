@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Мои подписки{% endblock %}
 {% block main_css %}/static/pages/myFollow.css{% endblock main_css %}
+{% load recipe_tags %}
 
 {% block content %}
 {% include 'includes/header.html' with subscribe=True %}
@@ -10,7 +11,10 @@
     <div class="main__header">
         <h1 class="main__title">Мои подписки</h1>
     </div>
+
     {% for author in page %}
+    {% recipes_for_subscriptions author as recipes %}
+
     <div class="card-list">
         <div class="card-user" data-author="{{ author.id }}">
             <div class="card-user__header">
@@ -19,19 +23,19 @@
 
             <div class="card-user__body">
                 <ul class="card-user__items">
-                    {% for recipe in author.recipe.all %}
+                    {% for recipe in recipes %}
                     <li class="card-user__item">
                         <div class="recipe">
-                            <img src='{{ recipe.image.url }}' alt="какой-то-текст" class="recipe__image">
+                            <img src='{{ recipe.image.url }}' alt="Изображение рецепта" class="recipe__image">
                             <h3 class="recipe__title">{{ recipe.name }}</h3>
                             <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
                         </div>
                     </li>
                     {% endfor %}
-                    
+
 
                     <li class="card-user__item">
-                        <a href="#" class="card-user__link link">Еще 7 рецептов...</a>
+                        <a href="#" class="card-user__link link">Всего {% total_recipes author %}</a>
                     </li>
 
                 </ul>
