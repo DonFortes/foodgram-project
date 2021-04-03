@@ -10,5 +10,5 @@ urlpatterns = [
     path('recipe/<slug:slug>/delete/', views.delete_recipe,
          name='delete_recipe'),
     path('author/<str:username>/', views.profile, name='profile'),
-
+    path('favorite/', views.favorite, name='favorite'),
 ]

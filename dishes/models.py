@@ -44,6 +44,16 @@ class Tag(models.Model):
         max_length=50,
         verbose_name='Имя',
         )
+    visual_name = models.CharField(
+        max_length=50,
+        verbose_name='Отображаемое имя',
+        blank=True,
+        )
+    color = models.CharField(
+        max_length=50,
+        verbose_name='Цвет',
+        blank=True,
+        )
 
     def __str__(self):
         return self.name
@@ -74,10 +84,10 @@ class Recipe(models.Model):
         verbose_name='Ингридиенты',
         db_index=True
         )
-    tag = models.ManyToManyField(
+    tags = models.ManyToManyField(
         Tag,
         related_name='recipe',
-        verbose_name='Тэг',
+        verbose_name='Тэги',
         db_index=True,
         )
     pub_date = models.DateTimeField(

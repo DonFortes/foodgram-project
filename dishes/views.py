@@ -1,25 +1,26 @@
-from django.http.response import JsonResponse
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.decorators import login_required
-import json
-from .models import Follow, User, Recipe
+from .models import User, Recipe
 from .forms import RecipeForm
+from .service import get_tags, lets_paginate
+from foodgram_project.settings import ITEMS_PER_PAGE
 
 
 def index(request):
-    recipe_list = Recipe.objects.all()
+    tags = get_tags(request)
+    recipe_list = Recipe.objects.filter(tags__name__in=tags).select_related(
+        'author').prefetch_related('tags').distinct()
 
-    paginator = Paginator(recipe_list, 3)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
+    page, paginator = lets_paginate(request, recipe_list)
 
-    # И еще теги как-то
     return render(
         request,
         'index.html',
         {
-            'page': page, 'paginator': paginator
+            'page': page,
+            'paginator': paginator,
+            'tags': tags,
             }
     )
 
@@ -28,9 +29,7 @@ def profile(request, username):
     author = get_object_or_404(User, username=username)
     recipe_list = author.recipe.all()
 
-    paginator = Paginator(recipe_list, 3)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
+    page, paginator = lets_paginate(request, recipe_list)
 
     return render(
         request,
@@ -42,27 +41,8 @@ def profile(request, username):
         }
     )
 
-    # if request.user.is_authenticated:
-    #     if Follow.objects.filter(user=request.user, author=author).exists():
-    #         following = True
-    #     else:
-    #         following = False
-    #     context = {
-    #         'author': author,
-    #         'page': page,
-    #         'paginator': paginator,
-    #         'following': following,
-    #         'username': author,
-    #     }
-    #     return render(request, 'profile.html', context)
-    # return render(
-    #     request,
-    #     'profile.html',
-    #     {'page': page, 'paginator': paginator, 'author': author}
-    # )
 
-
-# @login_required
+@login_required
 def new_recipe(request):
     form = RecipeForm()
     if request.method == 'POST':
@@ -111,17 +91,22 @@ def edit_recipe(request, slug):
 
 @login_required
 def delete_recipe(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug)
+    url = reverse('single_recipe', args={"slug": slug})
+    if recipe.author != request.user:
+        return redirect(url)
 
-    pass
+    url = reverse('index')
+    if recipe.author == request.user:
+        recipe.delete()
+    return redirect(url)
 
 
 @login_required
 def follows(request):
     authors = User.objects.filter(following__user=request.user)
 
-    paginator = Paginator(authors, 3)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
+    page, paginator = lets_paginate(request, authors)
 
     return render(
         request,
@@ -129,4 +114,14 @@ def follows(request):
         {
             'page': page, 'paginator': paginator
             }
+    )
+
+
+@login_required
+def favorite(request):
+
+    return render(
+        request,
+        'favorite.html',
+
     )
