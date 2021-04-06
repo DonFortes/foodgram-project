@@ -1,10 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-# from pytils.translit import slugify
-# from pytils import translit
+
 from django.utils.text import slugify as django_slugify
-# from autoslug import AutoSlugField
-# from uuslug import slugify
 
 
 User = get_user_model()
@@ -33,7 +30,7 @@ class Ingredient(models.Model):
     measure = models.CharField(
         max_length=10,
         verbose_name='Единица измерения',
-        )
+    )
 
     def __str__(self):
         return self.name
@@ -43,17 +40,17 @@ class Tag(models.Model):
     name = models.CharField(
         max_length=50,
         verbose_name='Имя',
-        )
+    )
     visual_name = models.CharField(
         max_length=50,
         verbose_name='Отображаемое имя',
         blank=True,
-        )
+    )
     color = models.CharField(
         max_length=50,
         verbose_name='Цвет',
         blank=True,
-        )
+    )
 
     def __str__(self):
         return self.name
@@ -64,53 +61,53 @@ class Recipe(models.Model):
         User, on_delete=models.CASCADE,
         related_name="recipe",
         verbose_name='Автор'
-        )
+    )
     name = models.CharField(
         max_length=50,
         verbose_name='Название',
         db_index=True
-        )
+    )
     image = models.ImageField(
         upload_to='app_01_dishes/',
         verbose_name='Картинка',
-        )
+    )
     description = models.TextField(
         verbose_name='Текстовое описание'
-        )
+    )
     ingredients = models.ManyToManyField(
         Ingredient,
         related_name='recipe',
         through='Volume',
         verbose_name='Ингридиенты',
         db_index=True
-        )
+    )
     tags = models.ManyToManyField(
         Tag,
         related_name='recipe',
         verbose_name='Тэги',
         db_index=True,
-        )
+    )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True, db_index=True
-        )
+    )
     cook_time = models.IntegerField(
         verbose_name='Время приготовления'
-        )
+    )
     slug = models.SlugField(
         unique=True, verbose_name='Ссылка',
         blank=True, default='',
-        )
+    )
     is_favorite = models.ManyToManyField(
         User, related_name='favorite',
         blank=True, verbose_name='Избранное',
-        )
+    )
     basket = models.ManyToManyField(
         User,
         related_name='basket',
         blank=True,
         verbose_name='Корзина',
-        )
+    )
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -131,13 +128,13 @@ class Volume(models.Model):
         related_name='volume',
         on_delete=models.CASCADE,
         verbose_name='id рецепта',
-        )
+    )
     id_ingredient = models.ForeignKey(
         Ingredient,
         related_name='volume',
         on_delete=models.CASCADE,
         verbose_name='id ингридиента',
-        )
+    )
     volume = models.IntegerField()
 
 

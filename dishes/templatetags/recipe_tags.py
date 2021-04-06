@@ -21,3 +21,14 @@ def recipes_for_subscriptions(author, count=AUTHOR_RECIPE):
 @register.simple_tag
 def get_recipes_of(author):
     return Recipe.objects.filter(author=author)
+
+
+@register.simple_tag
+def delete_tag(request, tags=None, name=None):
+    tags = list(tags)
+    tags.remove(name)
+    url_params = []
+    for tag in tags:
+        url_params.append('&'.join(f'tags={tag}'))
+    
+    pass

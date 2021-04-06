@@ -1,14 +1,16 @@
-from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, Recipe
+from .models import User, Recipe, Tag
 from .forms import RecipeForm
-from .service import get_tags, lets_paginate
-from foodgram_project.settings import ITEMS_PER_PAGE
+from .service import lets_paginate, get_tags_from
 
 
 def index(request):
-    tags = get_tags(request)
+    # логика по тэгам после этой ф-ции
+    # если тэги из request есть в all_tags
+    # то
+    tags = get_tags_from(request)
+    all_tags = Tag.objects.all()
     recipe_list = Recipe.objects.filter(tags__name__in=tags).select_related(
         'author').prefetch_related('tags').distinct()
 
@@ -21,7 +23,8 @@ def index(request):
             'page': page,
             'paginator': paginator,
             'tags': tags,
-            }
+            'all_tags': all_tags,
+        }
     )
 
 
@@ -49,7 +52,7 @@ def new_recipe(request):
         form = RecipeForm(
             request.POST or None,
             files=request.FILES or None
-            )
+        )
         if form.is_valid():
             form.instance.author = request.user
             form.save()
@@ -60,7 +63,7 @@ def new_recipe(request):
         request,
         'new_recipe.html',
         {'form': form}
-        )
+    )
 
 
 def single_recipe(request, slug):
@@ -80,7 +83,7 @@ def edit_recipe(request, slug):
         request.POST or None,
         files=request.FILES or None,
         instance=recipe
-        )
+    )
 
     if form.is_valid():
         form.save()
@@ -113,7 +116,7 @@ def follows(request):
         'subscriptions.html',
         {
             'page': page, 'paginator': paginator
-            }
+        }
     )
 
 

@@ -3,6 +3,9 @@ from dishes import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path(
+        r'^tag/(?P<tag_slug>[-\w]+)/$', views.index, name='recipe_list_by_tag'
+    ),
     path('new_recipe/', views.new_recipe, name='new_recipe'),
     path('follows/', views.follows, name='follows'),
     path('recipe/<slug:slug>/edit/', views.edit_recipe, name='edit_recipe'),

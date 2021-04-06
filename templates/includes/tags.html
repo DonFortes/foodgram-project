@@ -1,10 +1,18 @@
+{% load recipe_tags %}
+
 <ul class="tags">
-
-    
+    {% for tag in all_tags %}
     <li class="tags__item">
-        <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox_active" href="#"></a>
-        <span class="tags__label">Завтрак</span>
+        <a id="{{ tag.name }}"
+        class="tags__checkbox tags__checkbox_style_{{ tag.color }}
+        {% if tag.name in tags %} tags__checkbox_active{% endif %}"
+        href="
+        {% if tag.name in tags %}{% delete_tag request tags tag.name %}
+        {% else %}
+
+        ">
+        </a>
+        <span class="tags__label">{{ tag.visual_name }}</span>
     </li>
-
-
+    {% endfor %}
 </ul>
