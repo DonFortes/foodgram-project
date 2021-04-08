@@ -6,13 +6,14 @@ from .service import lets_paginate, get_tags_from
 
 
 def index(request):
-    # логика по тэгам после этой ф-ции
-    # если тэги из request есть в all_tags
-    # то
+
     tags = get_tags_from(request)
     all_tags = Tag.objects.all()
-    recipe_list = Recipe.objects.filter(tags__name__in=tags).select_related(
+    recipe_list = Recipe.objects.select_related(
         'author').prefetch_related('tags').distinct()
+
+    if tags:
+        recipe_list = recipe_list.filter(tags__name__in=tags)
 
     page, paginator = lets_paginate(request, recipe_list)
 
