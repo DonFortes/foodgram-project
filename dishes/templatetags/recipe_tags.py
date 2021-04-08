@@ -1,8 +1,11 @@
+from django.utils.http import urlencode
+from django.urls import reverse
 from django import template
 from dishes.models import Recipe
 from foodgram_project.settings import AUTHOR_RECIPE
 
 register = template.Library()
+
 
 # Не забывать добавлять {% load recipe_tags %} в шаблон
 
@@ -23,12 +26,30 @@ def get_recipes_of(author):
     return Recipe.objects.filter(author=author)
 
 
+# @register.simple_tag
+# def build_url(*args, **kwargs):
+#     params = kwargs.pop('params', {})
+#     url = reverse(*args, **kwargs)
+#     if params:
+#         url += '?' + urlencode(params)
+#     return url
+
+
 @register.simple_tag
-def delete_tag(request, tags=None, name=None):
+def build_url(request, tags=None, name=None):
     tags = list(tags)
-    tags.remove(name)
-    url_params = []
-    for tag in tags:
-        url_params.append('&'.join(f'tags={tag}'))
-    
-    pass
+
+    if name in tags:
+        tags.remove(name)
+    else:
+        tags.append(name)
+
+    url = request.path_info
+    url_params = '&'.join(f'tags={tag}' for tag in tags)
+    return '?'.join((url, url_params))
+
+    # url_params = []
+    # for tag in tags:
+    #     url_params.append('&'.join(f'tags={tag}'))
+
+    # return str(*url_params)
