@@ -33,10 +33,9 @@
                     </li>
                     {% endfor %}
 
-
                     <li class="card-user__item">
-                        <a href="{% url 'profile' author.username %}" class="card-user__link link">Всего {%
-                            total_recipes author %}</a>
+                        <a href="{% url 'profile' author.username %}" class="card-user__link link">
+                            Всего {% total_recipes author %}</a>
                     </li>
 
                 </ul>
@@ -48,7 +47,6 @@
         </div>
     </div>
     {% endfor %}
-
 
     <!-- pagination -->
     {% include 'includes/pagination.html' %}
