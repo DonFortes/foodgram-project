@@ -14,15 +14,13 @@
         <!-- /теги -->
     </div>
 
-
     <div class="card-list">
         <!-- card.html -->
-        {% for x in '0123456789'|make_list %}
+        {% for recipe in page %}
         {% include 'includes/card.html' %}
         {% endfor %}
         <!-- /card -->
     </div>
-
 
     <!-- pagination -->
     {% include 'includes/pagination.html' %}
@@ -33,14 +31,17 @@
 
 {% block js %}
 <script src="/static/js/components/MainCards.js"></script>
-
 <script src="/static/js/components/Purchases.js"></script>
+{% if user.is_authenticated %}
 <script src="/static/js/components/Favorites.js"></script>
-
+{% endif %}
 <script src="/static/js/config/config.js"></script>
 <script src="/static/js/components/CardList.js"></script>
 <script src="/static/js/components/Header.js"></script>
-
 <script src="/static/js/api/Api.js"></script>
-<script src="/static/favorite.js"></script>
+{% if user.is_authenticated %}
+<script src="/static/indexAuth.js"></script>
+{% else %}
+<script src="/static/indexNotAuth.js"></script>
+{% endif %}
 {% endblock %}

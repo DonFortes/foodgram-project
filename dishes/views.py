@@ -123,9 +123,24 @@ def follows(request):
 
 @login_required
 def favorite(request):
+    tags = get_tags_from(request)
+    all_tags = Tag.objects.all()
+
+    recipe_list = request.user.favorite.select_related(
+        'author').prefetch_related('tags').distinct()
+
+    if tags:
+        recipe_list = recipe_list.filter(tags__name__in=tags)
+
+    page, paginator = lets_paginate(request, recipe_list)
 
     return render(
         request,
         'favorite.html',
-
+        {
+            'page': page,
+            'paginator': paginator,
+            'tags': tags,
+            'all_tags': all_tags,
+        }
     )

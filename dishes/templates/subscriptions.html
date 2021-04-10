@@ -27,7 +27,8 @@
                     <li class="card-user__item">
                         <div class="recipe">
                             <img src='{{ recipe.image.url }}' alt="Изображение рецепта" class="recipe__image">
-                            <h3 class="recipe__title">{{ recipe.name }}</h3>
+                            <h3><a href="{% url 'single_recipe' recipe.slug %}" class="recipe__title">{{ recipe.name }}
+                                </a></h3>
                             <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
                         </div>
                     </li>
