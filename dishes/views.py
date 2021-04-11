@@ -153,3 +153,9 @@ def favorite(request):
             'all_tags': all_tags,
         }
     )
+
+
+@login_required
+def shoplist(request):
+
+    pass
