@@ -39,5 +39,10 @@ def build_url(request, tags=None, name=None):
 
 @register.simple_tag
 def check_subscribe(user, author):
-    return Follow.objects.filter(user=user, author=author).exists()
-    # return request.user.following.filter(author=author).exists
+    # return Follow.objects.filter(user=user, author=author).exists()
+    return user.follower.filter(author=author).exists
+
+
+@register.simple_tag
+def check_favorite(user, recipe_id):
+    return user.favorite.filter(id=recipe_id).exists()

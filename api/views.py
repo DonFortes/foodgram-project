@@ -61,6 +61,7 @@ def subscriptions_delete(request, author_id):
 
 
 @login_required
+@require_http_methods("POST")
 def favorites(request):
     recipe_id = int(json.loads(request.body).get('id'))
     recipe = get_object_or_404(Recipe, pk=recipe_id)
@@ -71,9 +72,10 @@ def favorites(request):
 
 
 @login_required
+@require_http_methods("DELETE")
 def favorites_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.user in recipe.is_favorite.all():
-        recipe.basket.remove(request.user)
+        recipe.is_favorite.remove(request.user)
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
