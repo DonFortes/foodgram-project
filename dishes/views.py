@@ -9,6 +9,7 @@ def index(request):
 
     tags = get_tags_from(request)
     all_tags = Tag.objects.all()
+
     recipe_list = Recipe.objects.select_related(
         'author').prefetch_related('tags').distinct()
 
@@ -30,8 +31,14 @@ def index(request):
 
 
 def profile(request, username):
+    tags = get_tags_from(request)
+    all_tags = Tag.objects.all()
+
     author = get_object_or_404(User, username=username)
     recipe_list = author.recipe.all()
+
+    if tags:
+        recipe_list = recipe_list.filter(tags__name__in=tags)
 
     page, paginator = lets_paginate(request, recipe_list)
 
@@ -39,9 +46,11 @@ def profile(request, username):
         request,
         'profile.html',
         {
-            "page": page,
-            "paginator": paginator,
-            "author": author,
+            'page': page,
+            'paginator': paginator,
+            'tags': tags,
+            'all_tags': all_tags,
+            'author': author,
         }
     )
 
@@ -69,13 +78,13 @@ def new_recipe(request):
 
 def single_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    return render(request, "single_recipe.html", {'recipe': recipe})
+    return render(request, 'single_recipe.html', {'recipe': recipe})
 
 
 @login_required
 def edit_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    url = reverse('single_recipe', args={"slug": slug})
+    url = reverse('single_recipe', args={'slug': slug})
 
     if recipe.author != request.user:
         return redirect(url)
@@ -96,7 +105,7 @@ def edit_recipe(request, slug):
 @login_required
 def delete_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    url = reverse('single_recipe', args={"slug": slug})
+    url = reverse('single_recipe', args={'slug': slug})
     if recipe.author != request.user:
         return redirect(url)
 
