@@ -59,15 +59,15 @@ def purchases(request):
     recipe_id = int(json.loads(request.body).get('id'))
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.user.is_authenticated:
-        if request.user not in recipe.shoplist.all():
-            recipe.shoplist.add(request.user)
+        if request.user not in recipe.basket.all():
+            recipe.basket.add(request.user)
             return JsonResponse({'success': True})
     else:
-        shoplist = request.session.get('shoplist')
-        if shoplist is None:
-            shoplist = []
-        shoplist.append(recipe_id)
-        request.session['shoplist'] = shoplist
+        basket = request.session.get('basket')
+        if basket is None:
+            basket = []
+        basket.append(recipe_id)
+        request.session['basket'] = basket
         return JsonResponse({'success': True})
 
 
@@ -75,7 +75,7 @@ def purchases(request):
 @require_http_methods("DELETE")
 def purchases_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if request.user in recipe.shoplist.all():
-        recipe.shoplist.remove(request.user)
+    if request.user in recipe.basket.all():
+        recipe.basket.remove(request.user)
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
