@@ -102,9 +102,9 @@ class Recipe(models.Model):
         User, related_name='favorite',
         blank=True, verbose_name='Избранное',
     )
-    basket = models.ManyToManyField(
+    shoplist = models.ManyToManyField(
         User,
-        related_name='basket',
+        related_name='shoplist',
         blank=True,
         verbose_name='Корзина',
     )

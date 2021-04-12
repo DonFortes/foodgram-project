@@ -8,4 +8,4 @@ class RecipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        exclude = ['author', 'ingredients', 'is_favorite', 'basket']
+        exclude = ['author', 'ingredients', 'is_favorite', 'shoplist']
