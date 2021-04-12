@@ -1,5 +1,6 @@
 {% load recipe_tags %}
 {% check_favorite request.user recipe.id as favorite %}
+{% check_purchase request.user recipe.id as in_basket %}
 
 <div class="card" data-id='{{ recipe.id }}'>
     <a href="{% url 'single_recipe' recipe.slug %}" class="link">
@@ -44,10 +45,21 @@
 
     <div class="card__footer">
 
+        {% if in_basket %}
+
+        <button class="button button_style_light-blue-outline" name="purchases">
+            <span class="icon-check button__icon">
+            </span> Убрать из корзины
+        </button>
+
+        {% else %}
+
         <button class="button button_style_light-blue" name="purchases" data-out>
             <span class="icon-plus button__icon">
             </span>Добавить в покупки
         </button>
+
+        {% endif %}
 
         {% if favorite %}
 

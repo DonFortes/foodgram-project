@@ -46,3 +46,8 @@ def check_subscribe(user, author):
 @register.simple_tag
 def check_favorite(user, recipe_id):
     return user.favorite.filter(id=recipe_id).exists()
+
+
+@register.simple_tag
+def check_purchase(user, recipe_id):
+    return user.basket.filter(id=recipe_id).exists()

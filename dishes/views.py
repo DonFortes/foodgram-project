@@ -157,5 +157,15 @@ def favorite(request):
 
 @login_required
 def shoplist(request):
+    recipe_list = request.user.basket.all()
 
-    pass
+    page, paginator = lets_paginate(request, recipe_list)
+
+    return render(
+        request,
+        'shoplist.html',
+        {
+            'page': page,
+            'paginator': paginator,
+        }
+    )
