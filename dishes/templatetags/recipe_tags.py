@@ -49,5 +49,23 @@ def check_favorite(user, recipe_id):
 
 
 @register.simple_tag
-def check_purchase(user, recipe_id):
-    return user.basket.filter(id=recipe_id).exists()
+def check_purchase(request, user, recipe_id):
+    if user.is_authenticated:
+        return user.basket.filter(id=recipe_id).exists()
+    else:
+        basket = request.session.get("basket")
+        if basket is not None:
+            return recipe_id in basket
+        else:
+            return 0
+
+
+@register.simple_tag
+def purchase_count(request):
+    if request.user.is_authenticated:
+        return request.user.basket.count()
+    else:
+        basket = request.session.get("basket")
+        if basket is not None:
+            return len(basket)
+        return 0

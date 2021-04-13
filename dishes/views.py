@@ -18,16 +18,11 @@ def index(request):
 
     page, paginator = lets_paginate(request, recipe_list)
 
-    return render(
-        request,
-        'index.html',
-        {
-            'page': page,
-            'paginator': paginator,
-            'tags': tags,
-            'all_tags': all_tags,
-        }
-    )
+    return render(request, 'index.html', {'page': page,
+                                          'paginator': paginator,
+                                          'tags': tags,
+                                          'all_tags': all_tags,
+                                          })
 
 
 def profile(request, username):
@@ -42,17 +37,12 @@ def profile(request, username):
 
     page, paginator = lets_paginate(request, recipe_list)
 
-    return render(
-        request,
-        'profile.html',
-        {
-            'page': page,
-            'paginator': paginator,
-            'tags': tags,
-            'all_tags': all_tags,
-            'author': author,
-        }
-    )
+    return render(request, 'profile.html', {'page': page,
+                                            'paginator': paginator,
+                                            'tags': tags,
+                                            'all_tags': all_tags,
+                                            'author': author,
+                                            })
 
 
 @login_required
@@ -121,13 +111,8 @@ def follows(request):
 
     page, paginator = lets_paginate(request, authors)
 
-    return render(
-        request,
-        'subscriptions.html',
-        {
-            'page': page, 'paginator': paginator
-        }
-    )
+    return render(request, 'subscriptions.html', {'page': page,
+                                                  'paginator': paginator})
 
 
 @login_required
@@ -143,29 +128,22 @@ def favorite(request):
 
     page, paginator = lets_paginate(request, recipe_list)
 
-    return render(
-        request,
-        'favorite.html',
-        {
-            'page': page,
-            'paginator': paginator,
-            'tags': tags,
-            'all_tags': all_tags,
-        }
-    )
+    return render(request, 'favorite.html', {'page': page,
+                                             'paginator': paginator,
+                                             'tags': tags,
+                                             'all_tags': all_tags,
+                                             })
 
 
-@login_required
 def shoplist(request):
-    recipe_list = request.user.basket.all()
+    if request.user.is_authenticated:
+        recipe_list = request.user.basket.all()
+
+    else:
+        basket = request.session.get('basket')
+        recipe_list = Recipe.objects.filter(id__in=basket)
 
     page, paginator = lets_paginate(request, recipe_list)
 
-    return render(
-        request,
-        'shoplist.html',
-        {
-            'page': page,
-            'paginator': paginator,
-        }
-    )
+    return render(request, 'shoplist.html', {'page': page,
+                                             'paginator': paginator})

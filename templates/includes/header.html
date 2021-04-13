@@ -1,4 +1,7 @@
 {% if user.is_authenticated %}
+
+{% load recipe_tags %}
+
 <header class="header">
     <nav class="nav">
         <div class="nav__container container">
@@ -13,7 +16,7 @@
                         class="nav__link link">Избранное</a></li>
                 <li class="nav__item{% if basket %} nav__item_active{% endif %}"><a href="{% url 'shoplist' %}"
                         class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge"
-                        id="counter">4</span></li>
+                        id="counter">{% purchase_count request %}</span></li>
 
             </ul>
             <ul class="nav__items list">
@@ -29,9 +32,11 @@
     <nav class="nav">
         <div class="nav__container container">
             <ul class="nav__items list">
-                <li class="nav__item nav__item_active"><a href="{% url 'index' %}" class="nav__link link">Рецепты</a>
-                </li>
-                <!-- <li class="nav__item nav__item_disabled"><a href="#" class="nav__link link">Список покупок <span class="badge badge_style_blue nav__badge" id="counter">4</span></a></li> -->
+                <li class="nav__item{% if index %} nav__item_active{% endif %}"><a href="{% url 'index' %}"
+                        class="nav__link link">Рецепты</a></li>
+                <li class="nav__item{% if basket %} nav__item_active{% endif %}"><a href="{% url 'shoplist' %}"
+                        class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge"
+                        id="counter">{% purchase_count request %}</span></li>
             </ul>
             <ul class="nav__items list">
                 <li class="nav__item"><a href="{% url 'login' %}" class="nav__link link">Войти</a></li>

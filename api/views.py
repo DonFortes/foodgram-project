@@ -53,7 +53,6 @@ def favorites_delete(request, recipe_id):
     return JsonResponse({'success': False})
 
 
-@login_required
 @require_http_methods("POST")
 def purchases(request):
     recipe_id = int(json.loads(request.body).get('id'))
@@ -71,11 +70,18 @@ def purchases(request):
         return JsonResponse({'success': True})
 
 
-@login_required
 @require_http_methods("DELETE")
 def purchases_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if request.user in recipe.basket.all():
-        recipe.basket.remove(request.user)
+    if request.user.is_authenticated:
+        if request.user in recipe.basket.all():
+            recipe.basket.remove(request.user)
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False})
+    else:
+        basket = request.session.get('basket')
+        if basket is None:
+            basket = []
+        basket.remove(recipe_id)
+        request.session['basket'] = basket
         return JsonResponse({'success': True})
-    return JsonResponse({'success': False})

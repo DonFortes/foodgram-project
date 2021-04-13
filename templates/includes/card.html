@@ -1,6 +1,9 @@
 {% load recipe_tags %}
+{% check_purchase request request.user recipe.id as in_basket %}
+
+{% if user.is_authenticated %}
 {% check_favorite request.user recipe.id as favorite %}
-{% check_purchase request.user recipe.id as in_basket %}
+{% endif %}
 
 <div class="card" data-id='{{ recipe.id }}'>
     <a href="{% url 'single_recipe' recipe.slug %}" class="link">
@@ -61,6 +64,7 @@
 
         {% endif %}
 
+        {% if user.is_authenticated %}
         {% if favorite %}
 
         <button class="button button_style_none" name="favorites">
@@ -75,6 +79,7 @@
             </span>
         </button>
 
+        {% endif %}
         {% endif %}
 
     </div>
