@@ -2,10 +2,18 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from .models import User, Recipe, Tag
 from .forms import RecipeForm
-from .service import lets_paginate, get_tags_from
+from .service import lets_paginate, get_tags_from, put_ingridients
+
+
+def put_ingredients_into_base(request):
+    put_ingridients()
+    url = reverse('index')
+    return redirect(url)
 
 
 def index(request):
+
+    # put_ingridients()
 
     tags = get_tags_from(request)
     all_tags = Tag.objects.all()
@@ -49,21 +57,13 @@ def profile(request, username):
 def new_recipe(request):
     form = RecipeForm()
     if request.method == 'POST':
-        form = RecipeForm(
-            request.POST or None,
-            files=request.FILES or None
-        )
+        form = RecipeForm(request.POST or None, files=request.FILES or None)
         if form.is_valid():
             form.instance.author = request.user
             form.save()
             print(form)
             return redirect('index')
-    print(request)
-    return render(
-        request,
-        'new_recipe.html',
-        {'form': form}
-    )
+    return render(request, 'new_recipe.html', {'form': form})
 
 
 def single_recipe(request, slug):
@@ -141,7 +141,10 @@ def shoplist(request):
 
     else:
         basket = request.session.get('basket')
-        recipe_list = Recipe.objects.filter(id__in=basket)
+        if basket is not None:
+            recipe_list = Recipe.objects.filter(id__in=basket)
+        else:
+            recipe_list = []
 
     page, paginator = lets_paginate(request, recipe_list)
 

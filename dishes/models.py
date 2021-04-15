@@ -25,10 +25,10 @@ def slugify(s):
 
 class Ingredient(models.Model):
     name = models.CharField(
-        max_length=50,
+        max_length=255,
         verbose_name='Имя',)
     measure = models.CharField(
-        max_length=10,
+        max_length=255,
         verbose_name='Единица измерения',
     )
 
