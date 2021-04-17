@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from foodgram_project.settings import ITEMS_PER_PAGE
 import csv
 from .models import Ingredient
+from django.db import transaction
 
 
 def put_ingridients():
@@ -24,3 +25,14 @@ def lets_paginate(request, list):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return page, paginator
+
+
+@transaction.atomic
+def save_recipe(request, form):
+    recipe = form.save(commit=False)
+    recipe.author = request.user
+    recipe.save()
+
+    recipe.save_m2m()
+
+    pass

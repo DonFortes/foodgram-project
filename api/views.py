@@ -2,7 +2,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
-from dishes.models import Follow, User, Recipe
+from dishes.models import Follow, Ingredient, User, Recipe
 from django.views.decorators.http import require_http_methods
 
 
@@ -85,3 +85,19 @@ def purchases_delete(request, recipe_id):
         basket.remove(recipe_id)
         request.session['basket'] = basket
         return JsonResponse({'success': True})
+
+
+@login_required()
+def ingredients(request):
+    ingredients = []
+    query = request.GET.get('query')
+    if query:
+        ingredients_from_db = Ingredient.objects.filter(name__startswith=query)
+        for db_ingredient in ingredients_from_db:
+            js_response = {
+                "title ": db_ingredient.name,
+                "dimension": db_ingredient.measure,
+            }
+            ingredients.append(js_response)
+
+    return JsonResponse(ingredients, safe=False)

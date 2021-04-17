@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from .models import User, Recipe, Tag
 from .forms import RecipeForm
-from .service import lets_paginate, get_tags_from, put_ingridients
+from .service import lets_paginate, get_tags_from, put_ingridients, save_recipe
 
 
 def put_ingredients_into_base(request):
@@ -55,14 +55,13 @@ def profile(request, username):
 
 @login_required
 def new_recipe(request):
-    form = RecipeForm()
-    if request.method == 'POST':
-        form = RecipeForm(request.POST or None, files=request.FILES or None)
-        if form.is_valid():
-            form.instance.author = request.user
-            form.save()
-            print(form)
-            return redirect('index')
+    form = RecipeForm(request.POST or None, files=request.FILES or None)
+
+    if form.is_valid():
+
+        recipe = save_recipe(request, form)
+
+        return redirect('single_recipe', slug=recipe.slug)
     return render(request, 'new_recipe.html', {'form': form})
 
 
