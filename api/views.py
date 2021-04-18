@@ -2,8 +2,10 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
+from loguru import logger
 from dishes.models import Follow, Ingredient, User, Recipe
 from django.views.decorators.http import require_http_methods
+from foodgram_project.services import log
 
 
 @login_required
@@ -91,13 +93,17 @@ def purchases_delete(request, recipe_id):
 def ingredients(request):
     ingredients = []
     query = request.GET.get('query')
+    log.debug(query)
     if query:
         ingredients_from_db = Ingredient.objects.filter(name__startswith=query)
         for db_ingredient in ingredients_from_db:
+            log.debug(db_ingredient.name)
+            log.debug(db_ingredient.measure)
             js_response = {
-                "title ": db_ingredient.name,
+                "title": db_ingredient.name,
                 "dimension": db_ingredient.measure,
             }
+            log.debug(js_response)
             ingredients.append(js_response)
 
     return JsonResponse(ingredients, safe=False)

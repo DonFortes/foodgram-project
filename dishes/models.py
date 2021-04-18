@@ -78,7 +78,7 @@ class Recipe(models.Model):
         Ingredient,
         related_name='recipe',
         through='Volume',
-        verbose_name='Ингридиенты',
+        verbose_name='Ингредиенты',
         db_index=True
     )
     tags = models.ManyToManyField(
@@ -86,6 +86,7 @@ class Recipe(models.Model):
         related_name='recipe',
         verbose_name='Тэги',
         db_index=True,
+        blank=True,
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
@@ -123,17 +124,17 @@ class Recipe(models.Model):
 
 
 class Volume(models.Model):
-    id_recipe = models.ForeignKey(
+    recipe = models.ForeignKey(
         Recipe,
         related_name='volume',
         on_delete=models.CASCADE,
-        verbose_name='id рецепта',
+        verbose_name='Рецепт',
     )
-    id_ingredient = models.ForeignKey(
+    ingredient = models.ForeignKey(
         Ingredient,
         related_name='volume',
         on_delete=models.CASCADE,
-        verbose_name='id ингридиента',
+        verbose_name='Ингредиент',
     )
     volume = models.IntegerField()
 
