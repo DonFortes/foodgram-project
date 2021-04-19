@@ -25,10 +25,14 @@ ITEMS_PER_PAGE = 3
 SECRET_KEY = 'hu9vzk1kz-gf@^3i+h%m=jbj&e)2pj$a2k1rr_0$86tdmz0l!8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "[::1]",
+    "testserver",
+]
 
 # Application definition
 
