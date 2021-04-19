@@ -112,6 +112,12 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+
+        if Recipe.objects.filter(slug=self.slug).exists():
+            i = 1
+            while Recipe.objects.filter(slug=self.slug).exists():
+                self.slug = slugify(self.name) + str(i)
+                i += 1
         super(Recipe, self).save(*args, **kwargs)
 
     class Meta:
