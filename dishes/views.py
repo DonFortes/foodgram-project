@@ -87,7 +87,7 @@ def edit_recipe(request, slug):
         edit_recipe_util(request, form, instance=recipe)
         return url
 
-    return render(request, "new_recipe.html", {"form": form, })
+    return render(request, "form_change_recipe.html", {"form": form, })
 
 
 @ login_required

@@ -4,8 +4,11 @@
 {% block content %}
 {% include 'includes/header.html' %}
 
+
 {% load recipe_tags %}
+{% if user.is_authenticated %}
 {% check_subscribe request.user author as following %}
+{% endif %}
 
 <main class="main container">
     <div class="main__header">
@@ -16,23 +19,28 @@
         <!-- /tags -->
     </div>
 
+
+
     <div class="author-subscribe" data-author="{{ author.id }}">
         <p style="padding: 0 0 2em 0;">
 
+            {% if user.is_authenticated and user != author %}
             {% if following %}
 
             <button class="button button_style_light-blue button_size_subscribe button_style_blue"
-                name="subscribe">Отписаться от автора
+                name="subscribe">Отписаться от {{ author }}
             </button>
 
             {% else %}
 
             <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться
-                на автора</button>
+                на {{ author }}</button>
 
+            {% endif %}
             {% endif %}
         </p>
     </div>
+
 
     <div class="card-list">
         <!-- card.html -->

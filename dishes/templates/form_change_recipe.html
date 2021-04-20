@@ -21,7 +21,29 @@
                 </div>
             </div>
 
-            {% include 'includes/form_tags.html' %}
+            <div class="form__group">
+                <p class="form__label">Теги</p>
+                <div class="form__field-group">
+                    <div class="tags">
+                        <div class="tags__item">
+                            <input type="checkbox" name="breakfast" id="id_breakfast"
+                                class="tags__checkbox tags__checkbox_style_orange">
+                            <label for="id_breakfast" class="tags__label">Завтрак</label>
+                        </div>
+                        <div class="tags__item">
+                            <input type="checkbox" name="lunch" id="id_lunch"
+                                class="tags__checkbox tags__checkbox_style_green">
+                            <label for="id_lunch" class="tags__label">Обед</label>
+                        </div>
+                        <div class="tags__item">
+                            <input type="checkbox" name="dinner" id="id_dinner"
+                                class="tags__checkbox tags__checkbox_style_purple">
+                            <label for="id_dinner" class="tags__label">Ужин</label>
+                        </div>
+                    </div>
+                    <span class="form__error">{{ form.tags.errors }}</span>
+                </div>
+            </div>
 
             <div class="form__group">
                 <label for="nameIngredient" class="form__label">Ингредиенты</label>
@@ -80,6 +102,7 @@
             <div class="form__group">
                 <span class="form__label">Загрузить фото</span>
                 <div class="form__field-group">
+
                     <label for="id_file" class="form__file-button">Выбрать файл</label>
                     <input type="file" class="form__file" name="file" id="id_file">
                     <span class="form__error"></span>
