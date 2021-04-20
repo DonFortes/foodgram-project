@@ -1,5 +1,7 @@
+from logging import exception
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.utils.text import slugify as django_slugify
 
@@ -111,13 +113,16 @@ class Recipe(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
 
-        if Recipe.objects.filter(slug=self.slug).exists():
-            i = 1
-            while Recipe.objects.filter(slug=self.slug).exists():
-                self.slug = slugify(self.name) + str(i)
-                i += 1
+        try:
+            last_id = Recipe.objects.latest('pub_date').id
+            num = last_id + 1
+        except ObjectDoesNotExist:
+            num = 1
+            pass
+
+        self.slug = slugify(self.name) + f'_{str(num)}'
+
         super(Recipe, self).save(*args, **kwargs)
 
     class Meta:

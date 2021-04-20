@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from .models import User, Recipe, Tag
 from .forms import RecipeForm
-from .service import lets_paginate, get_tags_from, put_ingridients, save_recipe
+from .service import (edit_recipe_util, lets_paginate, get_tags_from,
+                      put_ingridients, save_recipe)
 
 
 def put_ingredients_into_base(request):
@@ -73,25 +74,23 @@ def single_recipe(request, slug):
 @login_required
 def edit_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    url = reverse('single_recipe', args={'slug': slug})
+    url = redirect('single_recipe', slug=slug)
 
     if recipe.author != request.user:
-        return redirect(url)
+        if not request.user.is_superuser:
+            return url
 
-    form = RecipeForm(
-        request.POST or None,
-        files=request.FILES or None,
-        instance=recipe
-    )
+    form = RecipeForm(request.POST or None,
+                      files=request.FILES or None, instance=recipe)
 
     if form.is_valid():
-        form.save()
-        return redirect(url)
+        edit_recipe_util(request, form, instance=recipe)
+        return url
 
-    return redirect(url)
+    return render(request, "new_recipe.html", {"form": form, })
 
 
-@login_required
+@ login_required
 def delete_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     url = reverse('single_recipe', args={'slug': slug})
@@ -104,7 +103,7 @@ def delete_recipe(request, slug):
     return redirect(url)
 
 
-@login_required
+@ login_required
 def follows(request):
     authors = User.objects.filter(following__user=request.user)
 
@@ -114,7 +113,7 @@ def follows(request):
                                                   'paginator': paginator})
 
 
-@login_required
+@ login_required
 def favorite(request):
     tags = get_tags_from(request)
     all_tags = Tag.objects.all()
