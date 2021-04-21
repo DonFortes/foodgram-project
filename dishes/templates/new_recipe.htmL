@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Создание рецепта{% endblock %}
+{% block title %}{% if edit is True %}Редактирование рецепта{% else %}Создание рецепта{% endif %}{% endblock %}
+
 {% block main_css %}/static/pages/form.css{% endblock main_css %}
 
 {% block content %}
@@ -8,7 +9,7 @@
 <main class="main container">
 
     <div class="main__header">
-        <h1 class="main__title">Создание рецепта</h1>
+        <h1 class="main__title">{% if edit is True %}Редактирование рецепта{% else %}Создание рецепта{% endif %}</h1>
     </div>
 
     <div class="form-container">
@@ -20,9 +21,10 @@
             {{ form.errors }}
 
             <div class="form__group">
-                <label for="id_name" class="form__label">{{ recipe.name }}</label>
+                <label for="id_name" class="form__label">Название рецепта</label>
                 <div class="form__field-group">
-                    <input type="text" id="id_name" name="name" class="form__input">
+                    <input type="text" id="id_name" name="name" class="form__input"
+                        value="{{ recipe.name|default_if_none:'' }}">
                     <span class="form__error">{{ form.name.errors }}</span>
                 </div>
             </div>
@@ -30,23 +32,29 @@
             <div class="form__group">
                 <p class="form__label">Теги</p>
                 <div class="form__field-group">
+
                     <div class="tags">
                         <div class="tags__item">
                             <input type="checkbox" name="breakfast" id="id_breakfast"
-                                class="tags__checkbox tags__checkbox_style_orange">
+                                class="tags__checkbox tags__checkbox_style_orange" 
+                                {% if "breakfast" in used_tags %}checked{% endif %}>
                             <label for="id_breakfast" class="tags__label">Завтрак</label>
                         </div>
                         <div class="tags__item">
                             <input type="checkbox" name="lunch" id="id_lunch"
-                                class="tags__checkbox tags__checkbox_style_green">
+                                class="tags__checkbox tags__checkbox_style_green" 
+                                {% if "lunch" in used_tags %}checked{% endif %}>
                             <label for="id_lunch" class="tags__label">Обед</label>
                         </div>
                         <div class="tags__item">
                             <input type="checkbox" name="dinner" id="id_dinner"
-                                class="tags__checkbox tags__checkbox_style_purple">
+                                class="tags__checkbox tags__checkbox_style_purple" 
+                                {% if "dinner" in used_tags %}checked{% endif %}>
                             <label for="id_dinner" class="tags__label">Ужин</label>
                         </div>
                     </div>
+
+
                     <span class="form__error">{{ form.tags.errors }}</span>
                 </div>
             </div>
@@ -66,14 +74,23 @@
 
                     <div class="form__field-group-ingredientes-container">
 
+                        {% if edit %}
+                        {% for item in used_ingredients %}
 
-                        <!-- <div class="form__field-item-ingredient" id="ing_3">
-                            <span> Оливки 10шт.</span>
+                        <div class="form__field-item-ingredient" id="ing_3">
+                            <span>{{ item.ingredient.name }} {{ item.volume }}
+                                {{ item.ingredient.measure }}</span>
                             <span class="form__field-item-delete"></span>
-                            <input id="nameIngredient_3" name="nameIngredient_3" type="hidden" value="Оливки">
-                            <input id="valueIngredient_3" name="valueIngredient_3" type="hidden" value="10">
-                            <input id="unitsIngredient_3" name="unitsIngredient_3" type="hidden" value="шт.">
-                        </div> -->
+                            <input id="nameIngredient_3" name="nameIngredient_3" type="hidden"
+                                value="{{ item.ingredient.name }}">
+                            <input id="valueIngredient_3" name="valueIngredient_3" type="hidden"
+                                value="{{ item.volume }}">
+                            <input id="unitsIngredient_3" name="unitsIngredient_3" type="hidden"
+                                value="{{ item.ingredient.measure }}">
+                        </div>
+
+                        {% endfor %}
+                        {% endif %}
 
 
                     </div>
@@ -88,7 +105,8 @@
             <div class="form__group">
                 <label for="id_cook_time" class="form__label">Время приготовления</label>
                 <div class="form__field-group form__field-group_time">
-                    <input type="text" id="id_cook_time" name="cook_time" class="form__input">
+                    <input type="text" id="id_cook_time" name="cook_time" class="form__input"
+                        value="{{ recipe.cook_time|default_if_none:'' }}">
                     <label for="id_cook_time" class="form__label">минут</label>
                     <span class="form__error">{{ form.cook_time.errors }}</span>
 
@@ -99,7 +117,8 @@
             <div class="form__group">
                 <label for="id_description" class="form__label">Описание</label>
                 <div class="form__field-group">
-                    <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>
+                    <textarea name="description" id="id_description" rows="8" class="form__textarea">
+{{ recipe.description|default_if_none:'' }}</textarea>
                     <span class="form__error">{{ form.description.errors }}</span>
                 </div>
             </div>

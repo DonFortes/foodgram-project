@@ -4,6 +4,7 @@ from .models import User, Recipe, Tag
 from .forms import RecipeForm
 from .service import (edit_recipe_util, lets_paginate, get_tags_from,
                       put_ingridients, save_recipe)
+from foodgram_project.services import log
 
 
 def put_ingredients_into_base(request):
@@ -81,13 +82,26 @@ def edit_recipe(request, slug):
             return url
 
     form = RecipeForm(request.POST or None,
-                      files=request.FILES or None, instance=recipe)
+                      files=request.FILES or None,
+                      instance=recipe)
 
     if form.is_valid():
         edit_recipe_util(request, form, instance=recipe)
         return url
 
-    return render(request, "form_change_recipe.html", {"form": form, })
+    used_tags_queryset = recipe.tags.values_list()
+    used_tags = []
+    for tag in used_tags_queryset:
+        used_tags.append(tag[1])
+    used_ingredients = recipe.volume.all
+    edit = True
+
+    return render(request,
+                  'new_recipe.html',
+                  {'form': form, 'edit': edit,
+                   'recipe': recipe,
+                   'used_ingredients': used_ingredients,
+                   'used_tags': used_tags})
 
 
 @ login_required
