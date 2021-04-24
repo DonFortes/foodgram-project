@@ -32,8 +32,8 @@ def build_url(request, tags=None, name=None, page=None):
     if page is not None:
         page_params = f'page={page}'
         url_params = '&'.join(f'tags={tag}' for tag in tags)
-        params = f'{page_params}&{url_params}'
-        return '?'.join((url, params))
+        all_params = f'{page_params}&{url_params}'
+        return '?'.join((url, all_params))
 
     if name in tags:
         tags.remove(name)
