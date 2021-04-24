@@ -27,18 +27,20 @@ def get_recipes_of(author):
 @register.simple_tag
 def build_url(request, tags=None, name=None, page=None):
     tags = list(tags)
+    url = request.path_info
+
+    if page is not None:
+        page_params = f'page={page}'
+        url_params = '&'.join(f'tags={tag}' for tag in tags)
+        params = f'{page_params}&{url_params}'
+        return '?'.join((url, params))
 
     if name in tags:
         tags.remove(name)
     else:
         tags.append(name)
 
-    url = request.path_info
     url_params = '&'.join(f'tags={tag}' for tag in tags)
-
-    if page is not None and tags is not None:
-        return f'?page={page}&'.join((url, url_params))
-
     return '?'.join((url, url_params))
 
 

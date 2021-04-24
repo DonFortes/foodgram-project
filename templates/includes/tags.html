@@ -4,8 +4,8 @@
     {% for tag in all_tags %}
     <li class="tags__item">
         <a id="{{ tag.name }}" class="tags__checkbox tags__checkbox_style_{{ tag.color }}
-        {% if tag.name in tags %} tags__checkbox_active{% endif %}" href="
-        {% build_url request tags tag.name %}">
+        {% if tag.name in tags %} tags__checkbox_active{% endif %}"
+        href="{% build_url request tags tag.name %}">
         </a>
         <span class="tags__label">{{ tag.visual_name }}</span>
     </li>
