@@ -1,16 +1,46 @@
-<!-- <nav class="pagination" aria-label="Search results pages">
-    <ul class="pagination__container">
-        <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-left"></span></a></li>
-        <li class="pagination__item pagination__item_active"><a class="pagination__link link" href="#">1</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">2</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">3</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">4</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">5</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-right"></span></a></li>
-    </ul>
-</nav> -->
+{% load recipe_tags %}
 
 <nav class="pagination" aria-label="Search results pages">
+    <ul class="pagination__container">
+
+        {% if page.has_previous %}
+        <li class="pagination__item"><a class="pagination__link link" {% if tags %}
+                href="{% build_url request tags tag.name page.previous_page_number %}" {% endif %}
+                href="?page={{ page.previous_page_number }}">
+                <span class="icon-left">
+                </span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for i in paginator.page_range %}
+        {% if page.number == i %}
+
+        <li class="pagination__item pagination__item_active">
+            <a class="pagination__link link" href="#">{{ i }}
+            </a>
+        </li>
+        {% else %}
+        <li class="pagination__item"><a class="pagination__link link" {% if tags %}
+                href="{% build_url request tags tag.name i %}" {% endif %} href="?page={{ i }}">
+                {{ i }}
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if page.has_next %}
+        <li class="pagination__item"><a class="pagination__link link" {% if tags %}
+                href="{% build_url request tags tag.name page.next_page_number %}" {% endif %}
+                href="?page={{ page.next_page_number }}">
+                <span class="icon-right"></span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<!-- <nav class="pagination" aria-label="Search results pages">
     <ul class="pagination__container">
         {% if items.has_previous %}
         <li class="pagination__item"><a class="pagination__link link" href="?page={{ items.previous_page_number }}">&laquo; Предыдущая</a>
@@ -33,4 +63,4 @@
                 &raquo;</a></li>
         {% endif %}
     </ul>
-</nav>
+</nav> -->

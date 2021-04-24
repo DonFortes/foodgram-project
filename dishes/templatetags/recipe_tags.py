@@ -3,6 +3,7 @@ from django.urls import reverse
 from django import template
 from dishes.models import Recipe, Follow
 from foodgram_project.settings import AUTHOR_RECIPE
+from foodgram_project.services import log
 
 register = template.Library()
 
@@ -24,7 +25,7 @@ def get_recipes_of(author):
 
 
 @register.simple_tag
-def build_url(request, tags=None, name=None):
+def build_url(request, tags=None, name=None, page=None):
     tags = list(tags)
 
     if name in tags:
@@ -34,6 +35,10 @@ def build_url(request, tags=None, name=None):
 
     url = request.path_info
     url_params = '&'.join(f'tags={tag}' for tag in tags)
+
+    if page is not None and tags is not None:
+        return f'?page={page}&'.join((url, url_params))
+
     return '?'.join((url, url_params))
 
 
