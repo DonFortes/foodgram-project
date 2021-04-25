@@ -175,7 +175,7 @@ def download_file(request):
     if request.user.is_authenticated:
         recipes = request.user.basket.all()
     else:
-        recipes = Recipe.objects.filter(id__in=request.sesssion.get('basket'))
+        recipes = Recipe.objects.filter(id__in=request.session.get('basket'))
 
     if not recipes:
         return render(request, 'misc/404.html', status=404)
