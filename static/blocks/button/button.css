@@ -5,7 +5,7 @@
     font-size: 14px;
     background: none;
     border-radius: 6px;
-    /* padding: 12px 24px; */
+    padding: 12px 24px;
     height: 48px;
     line-height: 1;
     text-decoration: none;
@@ -19,4 +19,3 @@
 .button:active {
     box-shadow: 0 0 7px #ddd;
 }
-
