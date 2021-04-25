@@ -1,10 +1,9 @@
 from logging import exception
+
 from django.contrib.auth import get_user_model
-from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.db import models
 from django.utils.text import slugify as django_slugify
-
 
 User = get_user_model()
 

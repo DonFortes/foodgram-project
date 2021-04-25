@@ -1,9 +1,10 @@
-from django.utils.http import urlencode
-from django.urls import reverse
 from django import template
-from dishes.models import Recipe, Follow
-from foodgram_project.settings import AUTHOR_RECIPE
+from django.urls import reverse
+from django.utils.http import urlencode
+
+from dishes.models import Follow, Recipe
 from foodgram_project.services import log
+from foodgram_project.settings import AUTHOR_RECIPE
 
 register = template.Library()
 
