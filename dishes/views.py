@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, Recipe, Tag
+from .models import User, Recipe, Tag, Volume
 from .forms import RecipeForm
 from .service import (edit_recipe_util, lets_paginate, get_tags_from,
                       put_ingridients, save_recipe)
-from foodgram_project.services import log
+from django.db.models import Count, Sum
+from django.http import HttpResponse
 
 
 def put_ingredients_into_base(request):
@@ -162,3 +163,29 @@ def shoplist(request):
 
     return render(request, 'shoplist.html', {'page': page,
                                              'paginator': paginator})
+
+
+def download_file(request):
+    if request.user.is_authenticated:
+        recipes = request.user.basket.all()
+    else:
+        recipes = Recipe.objects.filter(id__in=request.sesssion.get('basket'))
+
+    if not recipes:
+        return render(request, 'misc/400.html', status=400)
+
+    volumes = Volume.objects.filter(recipe__in=recipes)
+    text = 'Список покупок:\n\n'
+
+    for number, volume in enumerate(volumes, start=1):
+        text += (
+            f'{number}) '
+            f'{volume.ingredient.name}: '
+            f'{volume.volume} '
+            f'{volume.ingredient.measure}.'
+        )
+
+    response = HttpResponse(text, content_type='text/plain')
+    filename = 'shop_list.txt'
+    response['Content-Disposition'] = f'attachment; filename={filename}'
+    return response
