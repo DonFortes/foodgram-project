@@ -1,12 +1,16 @@
+from collections import defaultdict
+from typing import DefaultDict
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
+from foodgram_project.services import log
+
 from .forms import RecipeForm
 from .models import Recipe, Tag, User, Volume
-from .service import (get_tags_from, lets_paginate,
-                      put_ingridients, save_recipe)
+from .service import get_tags_from, lets_paginate, put_ingridients, save_recipe
 
 
 def put_ingredients_into_base(request):
@@ -88,6 +92,7 @@ def edit_recipe(request, slug):
                       instance=recipe)
 
     if form.is_valid():
+        Volume.objects.filter(recipe=recipe).delete()
         save_recipe(request, form)
         return url
 
@@ -178,14 +183,14 @@ def download_file(request):
     volumes = Volume.objects.filter(recipe__in=recipes)
     text = 'Список покупок:\n\n'
 
-    for number, volume in enumerate(volumes, start=1):
-        text += (
-            f'{number}) '
-            f'Ингредиенты для {volume.recipe.name}: '
-            f'{volume.ingredient.name}: '
-            f'{volume.volume} '
-            f'{volume.ingredient.measure}.\n'
-        )
+    ingredients_dict = defaultdict(int)
+    for ing in sorted(volumes, key=lambda volume: volume.ingredient.name):
+        key = f'{ing.ingredient.name}, {ing.ingredient.measure}'
+        ingredients_dict[key] += ing.volume
+    log.debug(ingredients_dict)
+    ingredients_dict = ingredients_dict
+    for key, value in ingredients_dict.items():
+        text += (f'{key}: {value}\n')
 
     response = HttpResponse(text, content_type='text/plain')
     filename = 'shop_list.txt'

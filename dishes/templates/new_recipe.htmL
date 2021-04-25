@@ -36,20 +36,17 @@
                     <div class="tags">
                         <div class="tags__item">
                             <input type="checkbox" name="breakfast" id="id_breakfast"
-                                class="tags__checkbox tags__checkbox_style_orange" 
-                                {% if "breakfast" in used_tags %}checked{% endif %}>
+                                class="tags__checkbox tags__checkbox_style_orange" {% if "breakfast" in used_tags %}checked{% endif %}>
                             <label for="id_breakfast" class="tags__label">Завтрак</label>
                         </div>
                         <div class="tags__item">
                             <input type="checkbox" name="lunch" id="id_lunch"
-                                class="tags__checkbox tags__checkbox_style_green" 
-                                {% if "lunch" in used_tags %}checked{% endif %}>
+                                class="tags__checkbox tags__checkbox_style_green" {% if "lunch" in used_tags %}checked{% endif %}>
                             <label for="id_lunch" class="tags__label">Обед</label>
                         </div>
                         <div class="tags__item">
                             <input type="checkbox" name="dinner" id="id_dinner"
-                                class="tags__checkbox tags__checkbox_style_purple" 
-                                {% if "dinner" in used_tags %}checked{% endif %}>
+                                class="tags__checkbox tags__checkbox_style_purple" {% if "dinner" in used_tags %}checked{% endif %}>
                             <label for="id_dinner" class="tags__label">Ужин</label>
                         </div>
                     </div>
@@ -81,11 +78,12 @@
                             <span>{{ item.ingredient.name }} {{ item.volume }}
                                 {{ item.ingredient.measure }}</span>
                             <span class="form__field-item-delete"></span>
-                            <input id="nameIngredient_3" name="nameIngredient_3" type="hidden"
-                                value="{{ item.ingredient.name }}">
-                            <input id="valueIngredient_3" name="valueIngredient_3" type="hidden"
-                                value="{{ item.volume }}">
-                            <input id="unitsIngredient_3" name="unitsIngredient_3" type="hidden"
+                            <input id="nameIngredient_{{ forloop.counter }}" name="nameIngredient_{{ forloop.counter }}"
+                                type="hidden" value="{{ item.ingredient.name }}">
+                            <input id="valueIngredient_{{ forloop.counter }}"
+                                name="valueIngredient_{{ forloop.counter }}" type="hidden" value="{{ item.volume }}">
+                            <input id="unitsIngredient_{{ forloop.counter }}"
+                                name="unitsIngredient_{{ forloop.counter }}" type="hidden"
                                 value="{{ item.ingredient.measure }}">
                         </div>
 

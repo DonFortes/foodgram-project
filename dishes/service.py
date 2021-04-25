@@ -50,6 +50,7 @@ def save_recipe(request, form):
         recipe.tags.add(Tag.objects.get(name='dinner'))
 
     ingredients = get_ingredients(request)
+    log.debug(ingredients)
     ingredients_instances = []
     for ingredient_name, how_much in ingredients.items():
         ingredients_instances.append(Volume(
@@ -65,9 +66,12 @@ def save_recipe(request, form):
 
 def get_ingredients(request):
     post = request.POST
+    log.debug(post)
     ingredients = {}
     for key, name in post.items():
+        log.debug(key, name)
         if key.startswith("nameIngredient"):
+            log.debug("IT IS!")
             value = key.replace("name", "value")
             ingredients[name] = post[value]
     return ingredients

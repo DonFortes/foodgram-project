@@ -112,15 +112,15 @@ class Recipe(models.Model):
     )
 
     def save(self, *args, **kwargs):
+        if self.slug is None:
+            try:
+                last_id = Recipe.objects.latest('pub_date').id
+                num = last_id + 1
+            except ObjectDoesNotExist:
+                num = 1
+                pass
 
-        try:
-            last_id = Recipe.objects.latest('pub_date').id
-            num = last_id + 1
-        except ObjectDoesNotExist:
-            num = 1
-            pass
-
-        self.slug = slugify(self.name) + f'_{str(num)}'
+            self.slug = slugify(self.name) + f'_{str(num)}'
 
         super(Recipe, self).save(*args, **kwargs)
 
