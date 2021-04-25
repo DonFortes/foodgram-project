@@ -182,7 +182,7 @@ def download_file(request):
             f'{number}) '
             f'{volume.ingredient.name}: '
             f'{volume.volume} '
-            f'{volume.ingredient.measure}.'
+            f'{volume.ingredient.measure}.\n'
         )
 
     response = HttpResponse(text, content_type='text/plain')

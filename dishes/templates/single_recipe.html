@@ -67,12 +67,14 @@
                     </span>{{ recipe.cook_time }}
                 </p>
                 <ul class="single-card__items">
-                    <li class="single-card__item">
-                        <p class="single-card__text">
-                            <span class="icon-user">
-                            </span> {{ recipe.author }}
-                        </p>
-                    </li>
+                    <a href="{% url 'profile' recipe.author %}">
+                        <li class="single-card__item">
+                            <p class="single-card__text">
+                                <span class="icon-user">
+                                </span> {{ recipe.author }}
+                            </p>
+                        </li>
+                    </a>
 
                     {% if user.is_superuser or recipe.author == user %}
 
