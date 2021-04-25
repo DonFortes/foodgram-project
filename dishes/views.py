@@ -172,7 +172,7 @@ def download_file(request):
         recipes = Recipe.objects.filter(id__in=request.sesssion.get('basket'))
 
     if not recipes:
-        return render(request, 'misc/400.html', status=400)
+        return render(request, 'misc/404.html', status=404)
 
     volumes = Volume.objects.filter(recipe__in=recipes)
     text = 'Список покупок:\n\n'
