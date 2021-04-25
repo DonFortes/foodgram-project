@@ -88,7 +88,7 @@ def edit_recipe(request, slug):
                       instance=recipe)
 
     if form.is_valid():
-        edit_recipe_util(request, form, instance=recipe)
+        save_recipe(request, form)
         return url
 
     used_tags_queryset = recipe.tags.values_list()
@@ -181,6 +181,7 @@ def download_file(request):
     for number, volume in enumerate(volumes, start=1):
         text += (
             f'{number}) '
+            f'Ингредиенты для {volume.recipe.name}: '
             f'{volume.ingredient.name}: '
             f'{volume.volume} '
             f'{volume.ingredient.measure}.\n'

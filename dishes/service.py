@@ -71,9 +71,3 @@ def get_ingredients(request):
             value = key.replace("name", "value")
             ingredients[name] = post[value]
     return ingredients
-
-
-@transaction.atomic
-def edit_recipe_util(request, form, instance):
-    Volume.objects.filter(recipe=instance).delete()
-    return save_recipe(request, form)
