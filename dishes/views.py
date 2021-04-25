@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 from .forms import RecipeForm
 from .models import Recipe, Tag, User, Volume
-from .service import (edit_recipe_util, get_tags_from, lets_paginate,
+from .service import (get_tags_from, lets_paginate,
                       put_ingridients, save_recipe)
 
 
