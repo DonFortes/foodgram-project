@@ -118,7 +118,7 @@ class Recipe(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if self.slug is None:
+        if self.slug == '':
             try:
                 last_id = Recipe.objects.latest('pub_date').id
                 num = last_id + 1
