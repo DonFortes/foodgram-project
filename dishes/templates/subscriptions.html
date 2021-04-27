@@ -11,12 +11,11 @@
     <div class="main__header">
         <h1 class="main__title">Мои подписки</h1>
     </div>
-
-
-
     <div class="card-list">
+
         {% for author in page %}
         {% recipes_for_subscriptions author as recipes %}
+
         <div class="card-user" data-author="{{ author.id }}">
             <div class="card-user__header">
                 <h2> <a href="{% url 'profile' author.username %}" class="card-user__title">{{ author.username }}
@@ -26,7 +25,9 @@
 
             <div class="card-user__body">
                 <ul class="card-user__items">
+
                     {% for recipe in recipes %}
+
                     <li class="card-user__item">
                         <div class="recipe">
                             <img src='{{ recipe.image.url }}' alt="Изображение рецепта" class="recipe__image">
@@ -35,6 +36,7 @@
                             <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cook_time }} мин.</p>
                         </div>
                     </li>
+
                     {% endfor %}
 
                     <li class="card-user__item">
@@ -49,15 +51,14 @@
             </div>
 
         </div>
+
         {% endfor %}
 
     </div>
 
-
     <!-- pagination -->
     {% include 'includes/pagination.html' %}
     <!-- /pagination -->
-
 
 </main>
 {% endblock %}
