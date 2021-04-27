@@ -10,7 +10,7 @@ from foodgram_project.settings import ITEMS_PER_PAGE
 from .models import Ingredient, Tag, Volume
 
 
-def put_ingridients():
+def put_ingredients():
     with open('ingredients.csv', 'r', newline='', encoding="utf-8") as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:

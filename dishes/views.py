@@ -8,11 +8,11 @@ from foodgram_project.services import log
 
 from .forms import RecipeForm
 from .models import Recipe, Tag, User, Volume
-from .service import get_tags_from, lets_paginate, put_ingridients, save_recipe
+from .service import get_tags_from, lets_paginate, put_ingredients, save_recipe
 
 
 def put_ingredients_into_base(request):
-    put_ingridients()
+    put_ingredients()
     url = reverse('index')
     return redirect(url)
 
