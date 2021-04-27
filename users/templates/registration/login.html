@@ -3,7 +3,7 @@
 {% block main_css %}/static/pages/form.css{% endblock main_css %}
 
 {% block content %}
-{% include 'includes/header.html'%}
+{% include 'includes/header.html' with login=True %}
 
 <main class="main container">
 
@@ -18,7 +18,8 @@
             <div class="form__group">
                 <label for="id_username" class="form__label">Имя</label>
                 <div class="form__field-group">
-                    <input type="text" name="username" id="id_username" class="form__input" value={{ form.username.value|default:"" }}>
+                    <input type="text" name="username" id="id_username" class="form__input"
+                        value={{form.username.value|default:"" }}>
                     <span class="form__error"></span>
                 </div>
             </div>
@@ -33,7 +34,7 @@
 
             <div class="form__footer">
                 <button class="button button_style_blue">Войти</button>
-                <a class="form__forgot-link">Забыли пароль?</a>
+                <a href="{% url 'password_reset' %}" class="form__forgot-link">Забыли пароль?</a>
             </div>
         </form>
     </div>

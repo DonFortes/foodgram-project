@@ -1,5 +1,3 @@
-from logging import exception
-
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
@@ -33,6 +31,10 @@ class Ingredient(models.Model):
         verbose_name='Единица измерения',
     )
 
+    class Meta:
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Все ингредиенты'
+
     def __str__(self):
         return self.name
 
@@ -53,8 +55,12 @@ class Tag(models.Model):
         blank=True,
     )
 
+    class Meta:
+        verbose_name = 'Тэг'
+        verbose_name_plural = 'Тэги'
+
     def __str__(self):
-        return self.name
+        return self.visual_name
 
 
 class Recipe(models.Model):
@@ -66,7 +72,7 @@ class Recipe(models.Model):
     name = models.CharField(
         max_length=50,
         verbose_name='Название',
-        db_index=True
+        db_index=True,
     )
     image = models.ImageField(
         upload_to='app_01_dishes/',
@@ -130,7 +136,7 @@ class Recipe(models.Model):
         verbose_name_plural = 'рецепты'
 
     def __str__(self):
-        return f'Рецепт {self.name} от {self.author.username}'
+        return f'{self.name} от {self.author.username}'
 
 
 class Volume(models.Model):
@@ -147,6 +153,13 @@ class Volume(models.Model):
         verbose_name='Ингредиент',
     )
     volume = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Ингредиент для рецептов'
+        verbose_name_plural = 'Ингредиенты для рецептов'
+
+    def __str__(self):
+        return f'Ингредиент для рецепта: {self.recipe}'
 
 
 class Follow(models.Model):
@@ -166,4 +179,9 @@ class Follow(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
         unique_together = ["user", "author"]
+
+    def __str__(self):
+        return f'Подписка {self.user} на {self.author}'

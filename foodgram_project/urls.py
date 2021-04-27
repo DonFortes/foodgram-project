@@ -24,6 +24,5 @@ urlpatterns = [
     path('', include('dishes.urls')),
     path('admin/', admin.site.urls),
     path('auth/', include('users.urls')),
-    path('auth/', include('django.contrib.auth.urls')),
     path("api/v1/", include("api.urls")),
 ]
