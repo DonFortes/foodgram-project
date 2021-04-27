@@ -12,15 +12,15 @@
         <h1 class="main__title">Мои подписки</h1>
     </div>
 
-    {% for author in page %}
-    {% recipes_for_subscriptions author as recipes %}
+
 
     <div class="card-list">
+        {% for author in page %}
+        {% recipes_for_subscriptions author as recipes %}
         <div class="card-user" data-author="{{ author.id }}">
             <div class="card-user__header">
-                <h2> <a href="{% url 'profile' author.username %}"
-                    class="card-user__title">{{ author.username }}
-                </a>
+                <h2> <a href="{% url 'profile' author.username %}" class="card-user__title">{{ author.username }}
+                    </a>
                 </h2>
             </div>
 
@@ -41,16 +41,18 @@
                         <a href="{% url 'profile' author.username %}" class="card-user__link link">
                             Всего {% total_recipes author %}</a>
                     </li>
-
                 </ul>
             </div>
 
             <div class="card-user__footer">
                 <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
             </div>
+
         </div>
+        {% endfor %}
+
     </div>
-    {% endfor %}
+
 
     <!-- pagination -->
     {% include 'includes/pagination.html' %}
