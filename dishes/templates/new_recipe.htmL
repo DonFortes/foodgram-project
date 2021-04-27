@@ -133,7 +133,7 @@
             </div>
 
             <div class="form__footer">
-                <button class="button button_style_blue">Создать рецепт</button>
+                <button class="button button_style_blue">{% if edit is True %}Сохранить рецепт{% else %}Создать рецепта{% endif %}</button>
             </div>
 
     </div>
