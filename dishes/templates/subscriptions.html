@@ -18,7 +18,9 @@
     <div class="card-list">
         <div class="card-user" data-author="{{ author.id }}">
             <div class="card-user__header">
-                <h2> <a href="{% url 'profile' author.username %}" class="card-user__title">{{ author.username }}</a>
+                <h2> <a href="{% url 'profile' author.username %}"
+                    class="card-user__title">{{ author.username }}
+                </a>
                 </h2>
             </div>
 
@@ -30,7 +32,7 @@
                             <img src='{{ recipe.image.url }}' alt="Изображение рецепта" class="recipe__image">
                             <h3><a href="{% url 'single_recipe' recipe.slug %}" class="recipe__title">{{ recipe.name }}
                                 </a></h3>
-                            <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
+                            <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cook_time }} мин.</p>
                         </div>
                     </li>
                     {% endfor %}
