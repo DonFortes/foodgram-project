@@ -19,8 +19,6 @@ def put_ingredients_into_base(request):
 
 def index(request):
 
-    # put_ingridients()
-
     tags = get_tags_from(request)
     all_tags = Tag.objects.all()
 
