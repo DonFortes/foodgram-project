@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Избранное{% endblock %}
+
+{% block content %}
+
+<main class="main container">
+
+    <div class="main__header">
+        <h1 class="main__title">Избранное</h1>
+
+        <!-- теги.html -->
+        {% include 'includes/tags.html' %}
+        <!-- /теги -->
+    </div>
+
+    <div class="card-list">
+        <!-- card.html -->
+        {% for recipe in page %}
+        {% include 'includes/card.html' %}
+        {% endfor %}
+        <!-- /card -->
+    </div>
+
+    <!-- pagination -->
+    {% include 'includes/pagination.html' %}
+    <!-- /pagination -->
+
+</main>
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/components/MainCards.js"></script>
+<script src="/static/js/components/Purchases.js"></script>
+{% if user.is_authenticated %}
+<script src="/static/js/components/Favorites.js"></script>
+{% endif %}
+<script src="/static/js/config/config.js"></script>
+<script src="/static/js/components/CardList.js"></script>
+<script src="/static/js/components/Header.js"></script>
+<script src="/static/js/api/Api.js"></script>
+{% if user.is_authenticated %}
+<script src="/static/indexAuth.js"></script>
+{% else %}
+<script src="/static/indexNotAuth.js"></script>
+{% endif %}
+{% endblock %}

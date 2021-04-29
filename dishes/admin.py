@@ -4,11 +4,11 @@ from .models import Follow, Ingredient, Recipe, Tag, Volume
 
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_filter = ("name",)
+    list_filter = ('name',)
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_filter = ("name",)
+    list_filter = ('name',)
 
 
 admin.site.register(Ingredient, IngredientAdmin)

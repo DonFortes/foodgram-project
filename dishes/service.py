@@ -4,14 +4,13 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
-from foodgram_project.services import log
 from foodgram_project.settings import ITEMS_PER_PAGE
 
 from .models import Ingredient, Tag, Volume
 
 
 def put_ingredients():
-    with open('ingredients.csv', 'r', newline='', encoding="utf-8") as csvfile:
+    with open('ingredients.csv', 'r', newline='', encoding='utf-8') as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:
             Ingredient.objects.get_or_create(
@@ -36,11 +35,9 @@ def save_recipe(request, form):
 
     recipe = form.save(commit=False)
     post = request.POST
-    log.debug(post)
 
     recipe.author = request.user
     recipe.save()
-    log.debug(dir(recipe))
 
     if post.get('breakfast') == 'on':
         recipe.tags.add(Tag.objects.get(name='breakfast'))
@@ -50,7 +47,6 @@ def save_recipe(request, form):
         recipe.tags.add(Tag.objects.get(name='dinner'))
 
     ingredients = get_ingredients(request)
-    log.debug(ingredients)
     ingredients_instances = []
     for ingredient_name, how_much in ingredients.items():
         ingredients_instances.append(Volume(
@@ -66,12 +62,9 @@ def save_recipe(request, form):
 
 def get_ingredients(request):
     post = request.POST
-    log.debug(post)
     ingredients = {}
     for key, name in post.items():
-        log.debug(key, name)
-        if key.startswith("nameIngredient"):
-            log.debug("IT IS!")
-            value = key.replace("name", "value")
+        if key.startswith('nameIngredient'):
+            value = key.replace('name', 'value')
             ingredients[name] = post[value]
     return ingredients

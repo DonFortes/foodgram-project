@@ -2,8 +2,6 @@ from django import forms
 
 from .models import Recipe
 
-# from . import choices
-
 
 class RecipeForm(forms.ModelForm):
 

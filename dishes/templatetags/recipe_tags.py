@@ -8,7 +8,7 @@ register = template.Library()
 
 @register.simple_tag
 def total_recipes(author):
-    return Recipe.objects.filter(author=author).count()
+    return author.recipes.count()
 
 
 @register.simple_tag
@@ -44,21 +44,20 @@ def build_url(request, tags=None, name=None, page=None):
 
 @register.simple_tag
 def check_subscribe(user, author):
-    # return Follow.objects.filter(user=user, author=author).exists()
     return user.follower.filter(author=author).exists
 
 
 @register.simple_tag
 def check_favorite(user, recipe_id):
-    return user.favorite.filter(id=recipe_id).exists()
+    return user.favorites.filter(id=recipe_id).exists()
 
 
 @register.simple_tag
 def check_purchase(request, user, recipe_id):
     if user.is_authenticated:
-        return user.basket.filter(id=recipe_id).exists()
+        return user.purchases.filter(id=recipe_id).exists()
     else:
-        basket = request.session.get("basket")
+        basket = request.session.get('basket')
         if basket is not None:
             return recipe_id in basket
         else:
@@ -68,9 +67,9 @@ def check_purchase(request, user, recipe_id):
 @register.simple_tag
 def purchase_count(request):
     if request.user.is_authenticated:
-        return request.user.basket.count()
+        return request.user.purchases.count()
     else:
-        basket = request.session.get("basket")
+        basket = request.session.get('basket')
         if basket is not None:
             return len(basket)
         return 0

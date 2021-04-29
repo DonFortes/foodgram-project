@@ -4,8 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
-from foodgram_project.services import log
-
 from .forms import RecipeForm
 from .models import Recipe, Tag, User, Volume
 from .service import get_tags_from, lets_paginate, put_ingredients, save_recipe
@@ -30,11 +28,11 @@ def index(request):
 
     page, paginator = lets_paginate(request, recipe_list)
 
-    return render(request, 'index.html', {'page': page,
-                                          'paginator': paginator,
-                                          'tags': tags,
-                                          'all_tags': all_tags,
-                                          })
+    return render(request, 'dishes/index.html', {'page': page,
+                                                 'paginator': paginator,
+                                                 'tags': tags,
+                                                 'all_tags': all_tags,
+                                                 })
 
 
 def profile(request, username):
@@ -42,19 +40,19 @@ def profile(request, username):
     all_tags = Tag.objects.all()
 
     author = get_object_or_404(User, username=username)
-    recipe_list = author.recipe.all()
+    recipe_list = author.recipes.all()
 
     if tags:
         recipe_list = recipe_list.filter(tags__name__in=tags)
 
     page, paginator = lets_paginate(request, recipe_list)
 
-    return render(request, 'profile.html', {'page': page,
-                                            'paginator': paginator,
-                                            'tags': tags,
-                                            'all_tags': all_tags,
-                                            'author': author,
-                                            })
+    return render(request, 'dishes/profile.html', {'page': page,
+                                                   'paginator': paginator,
+                                                   'tags': tags,
+                                                   'all_tags': all_tags,
+                                                   'author': author,
+                                                   })
 
 
 @login_required
@@ -66,12 +64,12 @@ def new_recipe(request):
         recipe = save_recipe(request, form)
 
         return redirect('single_recipe', slug=recipe.slug)
-    return render(request, 'new_recipe.html', {'form': form})
+    return render(request, 'dishes/new_recipe.html', {'form': form})
 
 
 def single_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    return render(request, 'single_recipe.html', {'recipe': recipe})
+    return render(request, 'dishes/single_recipe.html', {'recipe': recipe})
 
 
 @login_required
@@ -96,11 +94,11 @@ def edit_recipe(request, slug):
     used_tags = []
     for tag in used_tags_queryset:
         used_tags.append(tag[1])
-    used_ingredients = recipe.volume.all
+    used_ingredients = recipe.volumes.all
     edit = True
 
     return render(request,
-                  'new_recipe.html',
+                  'dishes/new_recipe.html',
                   {'form': form, 'edit': edit,
                    'recipe': recipe,
                    'used_ingredients': used_ingredients,
@@ -126,8 +124,8 @@ def follows(request):
 
     page, paginator = lets_paginate(request, authors)
 
-    return render(request, 'subscriptions.html', {'page': page,
-                                                  'paginator': paginator})
+    return render(request, 'dishes/subscriptions.html', {'page': page,
+                                                         'paginator': paginator})
 
 
 @ login_required
@@ -135,7 +133,7 @@ def favorite(request):
     tags = get_tags_from(request)
     all_tags = Tag.objects.all()
 
-    recipe_list = request.user.favorite.select_related(
+    recipe_list = request.user.favorites.select_related(
         'author').prefetch_related('tags').distinct()
 
     if tags:
@@ -143,16 +141,16 @@ def favorite(request):
 
     page, paginator = lets_paginate(request, recipe_list)
 
-    return render(request, 'favorite.html', {'page': page,
-                                             'paginator': paginator,
-                                             'tags': tags,
-                                             'all_tags': all_tags,
-                                             })
+    return render(request, 'dishes/favorite.html', {'page': page,
+                                                    'paginator': paginator,
+                                                    'tags': tags,
+                                                    'all_tags': all_tags,
+                                                    })
 
 
 def shoplist(request):
     if request.user.is_authenticated:
-        recipe_list = request.user.basket.all()
+        recipe_list = request.user.purchases.all()
 
     else:
         basket = request.session.get('basket')
@@ -163,13 +161,13 @@ def shoplist(request):
 
     page, paginator = lets_paginate(request, recipe_list)
 
-    return render(request, 'shoplist.html', {'page': page,
-                                             'paginator': paginator})
+    return render(request, 'dishes/shoplist.html', {'page': page,
+                                                    'paginator': paginator})
 
 
 def download_file(request):
     if request.user.is_authenticated:
-        recipes = request.user.basket.all()
+        recipes = request.user.purchases.all()
     else:
         recipes = Recipe.objects.filter(id__in=request.session.get('basket'))
 
@@ -182,8 +180,7 @@ def download_file(request):
     ingredients_dict = defaultdict(int)
     for ing in sorted(volumes, key=lambda volume: volume.ingredient.name):
         key = f'{ing.ingredient.name}, {ing.ingredient.measure}'
-        ingredients_dict[key] += ing.volume
-    log.debug(ingredients_dict)
+        ingredients_dict[key] += ing.volumes
     ingredients_dict = ingredients_dict
     for key, value in ingredients_dict.items():
         text += (f'{key}: {value}\n')

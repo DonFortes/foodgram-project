@@ -66,7 +66,7 @@ class Tag(models.Model):
 class Recipe(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
-        related_name="recipe",
+        related_name='recipes',
         verbose_name='Автор'
     )
     name = models.CharField(
@@ -83,14 +83,14 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        related_name='recipe',
+        related_name='recipes',
         through='Volume',
         verbose_name='Ингредиенты',
         db_index=True
     )
     tags = models.ManyToManyField(
         Tag,
-        related_name='recipe',
+        related_name='recipes',
         verbose_name='Тэги',
         db_index=True,
         blank=True,
@@ -99,20 +99,34 @@ class Recipe(models.Model):
         verbose_name='Дата публикации',
         auto_now_add=True, db_index=True
     )
-    cook_time = models.IntegerField(
+    cook_time = models.PositiveIntegerField(
         verbose_name='Время приготовления'
     )
     slug = models.SlugField(
         unique=True, verbose_name='Ссылка',
         blank=True, default='',
+        # Это нужно здесь для корректоного сохранения рецепта
+        # при его первом создании и дальнейшем редактировании
+        # с помощью метода, который описан ниже.
+        # blank позволяет сохранять форму не вводя url.
+        # default='' запускает метод, который при первом формировании slug
+        # добавляет единицу к номеру id последнего рецепта
+        # для унификации ссылок.
+        # В случае, если создается два одинаковых рецепта,
+        # то ссылки у них все равно будут разными.
+        # При этом наш метод не позволит сохранить рецепт с default=''
+        # и в базе никогда не будет двух рецептов с однаковым slug.
+        # Наш метод не позволит этому быть. При этом если уже есть slug -
+        # то наш default не сработает. Я замыкаю всю логику на это.
+        # И я довольно долго над этим мучился )))
     )
     is_favorite = models.ManyToManyField(
-        User, related_name='favorite',
+        User, related_name='favorites',
         blank=True, verbose_name='Избранное',
     )
-    basket = models.ManyToManyField(
+    purchases = models.ManyToManyField(
         User,
-        related_name='basket',
+        related_name='purchases',
         blank=True,
         verbose_name='Корзина',
     )
@@ -122,13 +136,14 @@ class Recipe(models.Model):
             try:
                 last_id = Recipe.objects.latest('pub_date').id
                 num = last_id + 1
-            except ObjectDoesNotExist:
+            except Recipe.DoesNotExist:
                 num = 1
-                pass
 
             self.slug = slugify(self.name) + f'_{str(num)}'
 
         super(Recipe, self).save(*args, **kwargs)
+        # Если убрать - то теряется правильный slug при сохранении
+        # и начинаются ошибки при редактировании.
 
     class Meta:
         ordering = ['-pub_date']
@@ -142,17 +157,17 @@ class Recipe(models.Model):
 class Volume(models.Model):
     recipe = models.ForeignKey(
         Recipe,
-        related_name='volume',
+        related_name='volumes',
         on_delete=models.CASCADE,
         verbose_name='Рецепт',
     )
     ingredient = models.ForeignKey(
         Ingredient,
-        related_name='volume',
+        related_name='volumes',
         on_delete=models.CASCADE,
         verbose_name='Ингредиент',
     )
-    volume = models.IntegerField()
+    volume = models.PositiveIntegerField()
 
     class Meta:
         verbose_name = 'Ингредиент для рецептов'
@@ -181,7 +196,10 @@ class Follow(models.Model):
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
-        unique_together = ["user", "author"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'], name='unique_follow')
+        ]
 
     def __str__(self):
         return f'Подписка {self.user} на {self.author}'
