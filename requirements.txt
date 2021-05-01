@@ -4,6 +4,7 @@ django-autoslug==1.9.8
 django-widget-tweaks==1.4.8
 flake8==3.8.4
 gunicorn==20.0.4
+loguru==0.5.3
 mccabe==0.6.1
 Pillow==8.1.2
 psycopg2-binary==2.8.6

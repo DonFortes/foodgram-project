@@ -1,4 +1,5 @@
 from django.urls import path
+
 from dishes import views
 
 urlpatterns = [
@@ -13,4 +14,5 @@ urlpatterns = [
     path('favorite/', views.favorite, name='favorite'),
     path('shoplist/', views.shoplist, name='shoplist'),
     path('put/', views.put_ingredients_into_base, name='put'),
+    path('download_file/', views.download_file, name='download_file'),
 ]

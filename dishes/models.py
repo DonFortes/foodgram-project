@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-
 from django.utils.text import slugify as django_slugify
-
 
 User = get_user_model()
 
@@ -32,6 +31,10 @@ class Ingredient(models.Model):
         verbose_name='Единица измерения',
     )
 
+    class Meta:
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Все ингредиенты'
+
     def __str__(self):
         return self.name
 
@@ -52,20 +55,24 @@ class Tag(models.Model):
         blank=True,
     )
 
+    class Meta:
+        verbose_name = 'Тэг'
+        verbose_name_plural = 'Тэги'
+
     def __str__(self):
-        return self.name
+        return self.visual_name
 
 
 class Recipe(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
-        related_name="recipe",
+        related_name='recipes',
         verbose_name='Автор'
     )
     name = models.CharField(
         max_length=50,
         verbose_name='Название',
-        db_index=True
+        db_index=True,
     )
     image = models.ImageField(
         upload_to='app_01_dishes/',
@@ -76,42 +83,67 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        related_name='recipe',
+        related_name='recipes',
         through='Volume',
-        verbose_name='Ингридиенты',
+        verbose_name='Ингредиенты',
         db_index=True
     )
     tags = models.ManyToManyField(
         Tag,
-        related_name='recipe',
+        related_name='recipes',
         verbose_name='Тэги',
         db_index=True,
+        blank=True,
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True, db_index=True
     )
-    cook_time = models.IntegerField(
+    cook_time = models.PositiveIntegerField(
         verbose_name='Время приготовления'
     )
     slug = models.SlugField(
         unique=True, verbose_name='Ссылка',
         blank=True, default='',
+        # Это нужно здесь для корректоного сохранения рецепта
+        # при его первом создании и дальнейшем редактировании
+        # с помощью метода, который описан ниже.
+        # blank позволяет сохранять форму не вводя url.
+        # default='' запускает метод, который при первом формировании slug
+        # добавляет единицу к номеру id последнего рецепта
+        # для унификации ссылок.
+        # В случае, если создается два одинаковых рецепта,
+        # то ссылки у них все равно будут разными.
+        # При этом наш метод не позволит сохранить рецепт с default=''
+        # и в базе никогда не будет двух рецептов с однаковым slug.
+        # Наш метод не позволит этому быть. При этом если уже есть slug -
+        # то наш default не сработает. Я замыкаю всю логику на это.
+        # И я довольно долго над этим мучился )))
     )
     is_favorite = models.ManyToManyField(
-        User, related_name='favorite',
+        User, related_name='favorites',
         blank=True, verbose_name='Избранное',
     )
-    basket = models.ManyToManyField(
+    purchases = models.ManyToManyField(
         User,
-        related_name='basket',
+        related_name='purchases',
         blank=True,
         verbose_name='Корзина',
     )
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if self.slug == '':
+            try:
+                last_id = Recipe.objects.latest('pub_date').id
+                num = last_id + 1
+            except Recipe.DoesNotExist:
+                num = 1
+
+            self.slug = slugify(self.name) + f'_{str(num)}'
+
         super(Recipe, self).save(*args, **kwargs)
+        # Если убрать - то теряется правильный slug при сохранении
+        # и начинаются ошибки при редактировании.
 
     class Meta:
         ordering = ['-pub_date']
@@ -119,23 +151,30 @@ class Recipe(models.Model):
         verbose_name_plural = 'рецепты'
 
     def __str__(self):
-        return f'Рецепт {self.name} от {self.author.username}'
+        return f'{self.name} от {self.author.username}'
 
 
 class Volume(models.Model):
-    id_recipe = models.ForeignKey(
+    recipe = models.ForeignKey(
         Recipe,
-        related_name='volume',
+        related_name='volumes',
         on_delete=models.CASCADE,
-        verbose_name='id рецепта',
+        verbose_name='Рецепт',
     )
-    id_ingredient = models.ForeignKey(
+    ingredient = models.ForeignKey(
         Ingredient,
-        related_name='volume',
+        related_name='volumes',
         on_delete=models.CASCADE,
-        verbose_name='id ингридиента',
+        verbose_name='Ингредиент',
     )
-    volume = models.IntegerField()
+    volume = models.PositiveIntegerField()
+
+    class Meta:
+        verbose_name = 'Ингредиент для рецептов'
+        verbose_name_plural = 'Ингредиенты для рецептов'
+
+    def __str__(self):
+        return f'Ингредиент для рецепта: {self.recipe}'
 
 
 class Follow(models.Model):
@@ -155,4 +194,12 @@ class Follow(models.Model):
     )
 
     class Meta:
-        unique_together = ["user", "author"]
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'], name='unique_follow')
+        ]
+
+    def __str__(self):
+        return f'Подписка {self.user} на {self.author}'

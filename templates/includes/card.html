@@ -2,7 +2,7 @@
 {% check_purchase request request.user recipe.id as in_basket %}
 
 {% if user.is_authenticated %}
-{% check_favorite request.user recipe.id as favorite %}
+{% check_favorite user recipe.id as favorite %}
 {% endif %}
 
 <div class="card" data-id='{{ recipe.id }}'>

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Мои подписки{% endblock %}
+
+{% load static %}    
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'pages/myFollow.css' %}">
+{% endblock %}
+
+{% load recipe_tags %}
+
+{% block content %}
+
+<main class="main container">
+
+    <div class="main__header">
+        <h1 class="main__title">Мои подписки</h1>
+    </div>
+    <div class="card-list">
+
+        {% for author in page %}
+        {% recipes_for_subscriptions author as recipes %}
+
+        <div class="card-user" data-author="{{ author.id }}">
+            <div class="card-user__header">
+                <h2> <a href="{% url 'profile' author.username %}" class="card-user__title">{{ author.username }}
+                    </a>
+                </h2>
+            </div>
+
+            <div class="card-user__body">
+                <ul class="card-user__items">
+
+                    {% for recipe in recipes %}
+
+                    <li class="card-user__item">
+                        <div class="recipe">
+                            <img src='{{ recipe.image.url }}' alt="Изображение рецепта" class="recipe__image">
+                            <h3><a href="{% url 'single_recipe' recipe.slug %}" class="recipe__title">{{ recipe.name }}
+                                </a></h3>
+                            <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cook_time }} мин.</p>
+                        </div>
+                    </li>
+
+                    {% endfor %}
+
+                    <li class="card-user__item">
+                        <a href="{% url 'profile' author.username %}" class="card-user__link link">
+                            Всего {% total_recipes author %}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-user__footer">
+                <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- pagination -->
+    {% include 'includes/pagination.html' %}
+    <!-- /pagination -->
+
+</main>
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/config/config.js"></script>
+<script src="/static/js/components/MainCards.js"></script>
+<script src="/static/js/components/MyFollow.js"></script>
+<script src="/static/js/components/Subscribe.js"></script>
+<script src="/static/js/components/Header.js"></script>
+<script src="/static/js/api/Api.js"></script>
+<script src="/static/myFollow.js"></script>
+{% endblock %}
