@@ -9,16 +9,6 @@ from foodgram_project.settings import ITEMS_PER_PAGE
 from .models import Ingredient, Tag, Volume
 
 
-def put_ingredients():
-    with open('ingredients.csv', 'r', newline='', encoding='utf-8') as csvfile:
-        csvreader = csv.reader(csvfile)
-        for row in csvreader:
-            Ingredient.objects.get_or_create(
-                name=row[0],
-                measure=row[-1],
-            )
-
-
 def get_tags_from(request):
     return request.GET.getlist('tags')
 
