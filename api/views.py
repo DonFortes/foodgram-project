@@ -9,11 +9,11 @@ from dishes.models import Follow, Ingredient, Recipe, User
 
 
 @login_required
-@require_http_methods("POST")
+@require_http_methods('POST')
 def subscriptions(request):
-    author_id = int(json.loads(request.body).get("id"))
+    author_id = int(json.loads(request.body).get('id'))
     if author_id is None:
-        return JsonResponse({"success": False})
+        return JsonResponse({'success': False})
     author = get_object_or_404(User, pk=author_id)
     user = request.user
     if author != user:
@@ -26,7 +26,7 @@ def subscriptions(request):
 
 
 @login_required
-@require_http_methods("DELETE")
+@require_http_methods('DELETE')
 def subscriptions_delete(request, author_id):
     author = get_object_or_404(User, pk=author_id)
     user = request.user
@@ -35,11 +35,11 @@ def subscriptions_delete(request, author_id):
 
 
 @login_required
-@require_http_methods("POST")
+@require_http_methods('POST')
 def favorites(request):
     recipe_id = int(json.loads(request.body).get('id'))
     if recipe_id is None:
-        return JsonResponse({"success": False})
+        return JsonResponse({'success': False})
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if not request.user.favorites.filter(id=recipe_id).exists():
         recipe.is_favorite.add(request.user)
@@ -48,7 +48,7 @@ def favorites(request):
 
 
 @login_required
-@require_http_methods("DELETE")
+@require_http_methods('DELETE')
 def favorites_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.user.favorites.filter(id=recipe_id).exists():
@@ -57,11 +57,11 @@ def favorites_delete(request, recipe_id):
     return JsonResponse({'success': False})
 
 
-@require_http_methods("POST")
+@require_http_methods('POST')
 def purchases(request):
     recipe_id = int(json.loads(request.body).get('id'))
     if recipe_id is None:
-        return JsonResponse({"success": False})
+        return JsonResponse({'success': False})
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.user.is_authenticated:
         if not request.user.purchases.filter(id=recipe_id).exists():
@@ -76,7 +76,7 @@ def purchases(request):
         return JsonResponse({'success': True})
 
 
-@require_http_methods("DELETE")
+@require_http_methods('DELETE')
 def purchases_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.user.is_authenticated:
@@ -101,11 +101,10 @@ def ingredients(request):
         ingredients_from_db = Ingredient.objects.filter(
             name__startswith=query).values('name', 'measure')
         # values применил, но как избавиться от цикла - так и не понял))
-        # на мой взгляд, в данном случае это невозможно
         for db_ingredient in ingredients_from_db:
             js_response = {
-                "title": db_ingredient['name'],
-                "dimension": db_ingredient['measure'],
+                'title': db_ingredient['name'],
+                'dimension': db_ingredient['measure'],
             }
             ingredients.append(js_response)
 

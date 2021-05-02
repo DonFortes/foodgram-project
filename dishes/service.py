@@ -1,5 +1,3 @@
-import csv
-
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -30,11 +28,11 @@ def save_recipe(request, form):
     recipe.save()
 
     if post.get('breakfast') == 'on':
-        recipe.tags.add(Tag.objects.get(name='breakfast'))
+        recipe.tags.add(get_object_or_404(Tag, name='breakfast'))
     if post.get('lunch') == 'on':
-        recipe.tags.add(Tag.objects.get(name='lunch'))
+        recipe.tags.add(get_object_or_404(Tag, name='lunch'))
     if post.get('dinner') == 'on':
-        recipe.tags.add(Tag.objects.get(name='dinner'))
+        recipe.tags.add(get_object_or_404(Tag, name='dinner'))
 
     ingredients = get_ingredients(request)
     ingredients_instances = []

@@ -13,3 +13,11 @@ def page_not_found(request, exception):
 
 def server_error(request):
     return render(request, 'misc/500.html', status=500)
+
+
+def technology(request):
+    return render(request, 'misc/technology.html')
+
+
+def about_author(request):
+    return render(request, 'misc/about_author.html')

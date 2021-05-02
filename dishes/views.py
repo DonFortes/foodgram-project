@@ -8,6 +8,11 @@ from .forms import RecipeForm
 from .models import Recipe, Tag, User, Volume
 from .service import get_tags_from, lets_paginate, save_recipe
 
+# Вьюха put_ingredients_into_base использовалась по пути
+# path('put/', views.put_ingredients_into_base, name='put').
+# С ее помощью, переходя по ссылке put/, я заполнял базу ингредиентами.
+# Теперь вся эта логика в migrations, вместе с созданием тэгов :)
+
 
 def index(request):
 
@@ -16,6 +21,11 @@ def index(request):
 
     recipe_list = Recipe.objects.select_related(
         'author').prefetch_related('tags').distinct()
+
+    # Тут не понял, что еще можно вынести.
+    # У нас ведь всегда разные запросы. По разному конструируются.
+    # Следуя этой логике, я вынес пагинтор, тэги и схранение рецепта.
+    # Но больше не вижу что еще можно вынести :)
 
     if tags:
         recipe_list = recipe_list.filter(tags__name__in=tags)
@@ -118,8 +128,9 @@ def follows(request):
 
     page, paginator = lets_paginate(request, authors)
 
-    return render(request, 'dishes/subscriptions.html', {'page': page,
-                                                         'paginator': paginator})
+    return render(request, 'dishes/subscriptions.html',
+                  {'page': page,
+                   'paginator': paginator})
 
 
 @ login_required

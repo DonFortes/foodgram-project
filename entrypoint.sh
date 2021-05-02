@@ -2,8 +2,8 @@
 
 sleep 2
 
-python manage.py migrate api dishes users
 python manage.py migrate
+python manage.py migrate dishes
 
 if [ "$DJANGO_SUPERUSER_USERNAME" ]; then
   python manage.py createsuperuser \

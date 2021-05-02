@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{% if edit %}Редактирование рецепта{% else %}Создание рецепта{% endif %}{% endblock %}
 
-{% load static %}    
+{% load static %}
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'pages/form.css' %}">
 {% endblock %}
@@ -137,10 +137,11 @@
             <div class="form__footer">
                 <button class="button button_style_blue">{% if edit %}Сохранить рецепт{% else %}Создать рецепта{% endif %}</button>
                 {% if edit %}
-            <a style="margin-left: 2.5em" href="{% url 'delete_recipe' recipe.slug %}" class="form__ingredient-link">Удалить</a>
-            {% endif %}
+                <a style="margin-left: 2.5em" href="{% url 'delete_recipe' recipe.slug %}"
+                    class="form__ingredient-link">Удалить</a>
+                {% endif %}
             </div>
-            
+
     </div>
     </form>
 
