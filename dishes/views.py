@@ -10,6 +10,8 @@ from .service import get_tags_from, lets_paginate, put_ingredients, save_recipe
 
 
 def put_ingredients_into_base(request):
+    # мы вызываем эту вьюху по path('put/', views.put_ingredients_into_base, name='put'),
+    # чтобы корректно заполнить базу данных через get_or_create самописным методом
     put_ingredients()
     url = reverse('index')
     return redirect(url)
