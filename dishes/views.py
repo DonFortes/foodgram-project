@@ -182,7 +182,7 @@ def download_file(request):
     ingredients_dict = defaultdict(int)
     for ing in sorted(volumes, key=lambda volume: volume.ingredient.name):
         key = f'{ing.ingredient.name}, {ing.ingredient.measure}'
-        ingredients_dict[key] += ing.volumes
+        ingredients_dict[key] += ing.volume
     ingredients_dict = ingredients_dict
     for key, value in ingredients_dict.items():
         text += (f'{key}: {value}\n')
