@@ -4,8 +4,34 @@ from django.db import migrations
 import csv
 
 
-def put_ingredients(apps, schema_editor):
+def put_data(apps, schema_editor):
+
     Ingredient = apps.get_model('dishes', 'Ingredient')
+    Tag = apps.get_model('dishes', 'Tag')
+
+    tags = [
+        {
+            'name': 'breakfast',
+            'visual_name': 'завтрак',
+            'color': 'green',
+        },
+        {
+            'name': 'lunch',
+            'visual_name': 'обед',
+            'color': 'orange',
+        },
+        {
+            'name': 'dinner',
+            'visual_name': 'ужин',
+            'color': 'purple',
+        }
+    ]
+    for tag in tags:
+        Tag.objects.get_or_create(
+            name=tag['name'],
+            visual_name=tag['visual_name'],
+            color=tag['color'],
+        )
 
     with open('ingredients.csv', 'r', newline='', encoding='utf-8') as csvfile:
         csvreader = csv.reader(csvfile)
@@ -23,5 +49,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(put_ingredients),
+        migrations.RunPython(put_data),
     ]
