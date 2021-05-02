@@ -6,15 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 from .forms import RecipeForm
 from .models import Recipe, Tag, User, Volume
-from .service import get_tags_from, lets_paginate, put_ingredients, save_recipe
-
-
-def put_ingredients_into_base(request):
-    # мы вызываем эту вьюху по path('put/', views.put_ingredients_into_base, name='put'),
-    # чтобы корректно заполнить базу данных через get_or_create самописным методом
-    put_ingredients()
-    url = reverse('index')
-    return redirect(url)
+from .service import get_tags_from, lets_paginate, save_recipe
 
 
 def index(request):
