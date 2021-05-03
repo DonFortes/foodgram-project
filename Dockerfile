@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 
 
 WORKDIR /code
-# COPY . /code
+COPY . /code
 COPY ./requirements.txt /code
 COPY ./entrypoint.sh /code
 RUN pip install -r /code/requirements.txt
