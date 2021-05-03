@@ -12,6 +12,8 @@ from dishes.models import Follow, Ingredient, Recipe, User
 @require_http_methods('POST')
 def subscriptions(request):
     author_id = int(json.loads(request.body).get('id'))
+    # эм. Я же изменил и добавил if author_id is None:
+    # И обработал потенциальный None. Не то?
     if author_id is None:
         return JsonResponse({'success': False})
     author = get_object_or_404(User, pk=author_id)
