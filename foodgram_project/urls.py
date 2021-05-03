@@ -4,8 +4,8 @@ from django.urls import include, path
 
 from . import views
 
-handler404 = 'foodgram_project.views.page_not_found'
-handler500 = 'foodgram_project.views.server_error'
+handler404 = 'foodgram_project.views.page_not_found'  # noqa
+handler500 = 'foodgram_project.views.server_error'  # noqa
 
 urlpatterns = [
     path('', include('dishes.urls')),
