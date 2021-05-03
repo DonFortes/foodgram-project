@@ -6,31 +6,18 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 from .forms import RecipeForm
 from .models import Recipe, Tag, User, Volume
-from .service import get_tags_from, lets_paginate, save_recipe
-
-# Вьюха put_ingredients_into_base использовалась по пути
-# path('put/', views.put_ingredients_into_base, name='put').
-# С ее помощью, переходя по ссылке put/, я заполнял базу ингредиентами.
-# Теперь вся эта логика в migrations, вместе с созданием тэгов :)
+from .service import lets_paginate, save_recipe, get_and_filter_by_tags
 
 
 def index(request):
 
-    tags = get_tags_from(request)
     all_tags = Tag.objects.all()
 
     recipe_list = Recipe.objects.select_related(
         'author').prefetch_related('tags').distinct()
 
-    # Тут не понял, что еще можно вынести.
-    # У нас ведь всегда разные запросы. По разному конструируются.
-    # Следуя этой логике, я вынес пагинтор, тэги и схранение рецепта.
-    # Но больше не вижу что еще можно вынести :)
-
-    if tags:
-        recipe_list = recipe_list.filter(tags__name__in=tags)
-
-    page, paginator = lets_paginate(request, recipe_list)
+    list, tags = get_and_filter_by_tags(request, recipe_list)
+    page, paginator = lets_paginate(request, list)
 
     return render(request, 'dishes/index.html', {'page': page,
                                                  'paginator': paginator,
@@ -40,16 +27,14 @@ def index(request):
 
 
 def profile(request, username):
-    tags = get_tags_from(request)
+
     all_tags = Tag.objects.all()
 
     author = get_object_or_404(User, username=username)
     recipe_list = author.recipes.all()
 
-    if tags:
-        recipe_list = recipe_list.filter(tags__name__in=tags)
-
-    page, paginator = lets_paginate(request, recipe_list)
+    list, tags = get_and_filter_by_tags(request, recipe_list)
+    page, paginator = lets_paginate(request, list)
 
     return render(request, 'dishes/profile.html', {'page': page,
                                                    'paginator': paginator,
@@ -135,16 +120,14 @@ def follows(request):
 
 @ login_required
 def favorite(request):
-    tags = get_tags_from(request)
+
     all_tags = Tag.objects.all()
 
     recipe_list = request.user.favorites.select_related(
         'author').prefetch_related('tags').distinct()
 
-    if tags:
-        recipe_list = recipe_list.filter(tags__name__in=tags)
-
-    page, paginator = lets_paginate(request, recipe_list)
+    list, tags = get_and_filter_by_tags(request, recipe_list)
+    page, paginator = lets_paginate(request, list)
 
     return render(request, 'dishes/favorite.html', {'page': page,
                                                     'paginator': paginator,

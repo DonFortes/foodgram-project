@@ -7,8 +7,11 @@ from foodgram_project.settings import ITEMS_PER_PAGE
 from .models import Ingredient, Tag, Volume
 
 
-def get_tags_from(request):
-    return request.GET.getlist('tags')
+def get_and_filter_by_tags(request, list):
+    tags = request.GET.getlist('tags')
+    if tags:
+        list = list.filter(tags__name__in=tags)
+    return list, tags
 
 
 def lets_paginate(request, list):
