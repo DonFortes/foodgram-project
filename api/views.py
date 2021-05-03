@@ -101,7 +101,6 @@ def purchases_delete(request, recipe_id):
 def ingredients(request):
     query = request.GET.get('query')
     if query:
-
         ingredients_from_db = list(Ingredient.objects.filter(
             name__startswith=query).values(
                 title=F('name'), dimension=F('measure')))
