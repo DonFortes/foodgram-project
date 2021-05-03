@@ -1,10 +1,10 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
-from django.db.models import F
 
 from dishes.models import Follow, Ingredient, Recipe, User
 

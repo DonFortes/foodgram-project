@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 from .forms import RecipeForm
 from .models import Recipe, Tag, User, Volume
-from .service import lets_paginate, save_recipe, get_and_filter_by_tags
+from .service import get_and_filter_by_tags, lets_paginate, save_recipe
 
 
 def index(request):
