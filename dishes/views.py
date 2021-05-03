@@ -10,7 +10,6 @@ from .service import get_and_filter_by_tags, lets_paginate, save_recipe
 
 
 def index(request):
-
     all_tags = Tag.objects.all()
     recipe_list = Recipe.objects.select_related(
         'author').prefetch_related('tags').distinct()
@@ -24,7 +23,6 @@ def index(request):
 
 
 def profile(request, username):
-
     all_tags = Tag.objects.all()
     author = get_object_or_404(User, username=username)
     recipe_list = author.recipes.all()
