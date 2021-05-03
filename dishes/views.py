@@ -12,13 +12,10 @@ from .service import get_and_filter_by_tags, lets_paginate, save_recipe
 def index(request):
 
     all_tags = Tag.objects.all()
-
     recipe_list = Recipe.objects.select_related(
         'author').prefetch_related('tags').distinct()
-
     list, tags = get_and_filter_by_tags(request, recipe_list)
     page, paginator = lets_paginate(request, list)
-
     return render(request, 'dishes/index.html', {'page': page,
                                                  'paginator': paginator,
                                                  'tags': tags,
@@ -29,13 +26,10 @@ def index(request):
 def profile(request, username):
 
     all_tags = Tag.objects.all()
-
     author = get_object_or_404(User, username=username)
     recipe_list = author.recipes.all()
-
     list, tags = get_and_filter_by_tags(request, recipe_list)
     page, paginator = lets_paginate(request, list)
-
     return render(request, 'dishes/profile.html', {'page': page,
                                                    'paginator': paginator,
                                                    'tags': tags,
@@ -47,11 +41,8 @@ def profile(request, username):
 @login_required
 def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
-
     if form.is_valid():
-
         recipe = save_recipe(request, form)
-
         return redirect('single_recipe', slug=recipe.slug)
     return render(request, 'dishes/new_recipe.html', {'form': form})
 
@@ -65,27 +56,22 @@ def single_recipe(request, slug):
 def edit_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     url = redirect('single_recipe', slug=slug)
-
     if recipe.author != request.user:
         if not request.user.is_superuser:
             return url
-
     form = RecipeForm(request.POST or None,
                       files=request.FILES or None,
                       instance=recipe)
-
     if form.is_valid():
         Volume.objects.filter(recipe=recipe).delete()
         save_recipe(request, form)
         return url
-
     used_tags_queryset = recipe.tags.values_list()
     used_tags = []
     for tag in used_tags_queryset:
         used_tags.append(tag[1])
     used_ingredients = recipe.volumes.all
     edit = True
-
     return render(request,
                   'dishes/new_recipe.html',
                   {'form': form, 'edit': edit,
@@ -100,7 +86,6 @@ def delete_recipe(request, slug):
     url = reverse('single_recipe', args={'slug': slug})
     if recipe.author != request.user:
         return redirect(url)
-
     url = reverse('index')
     if recipe.author == request.user:
         recipe.delete()
@@ -110,9 +95,7 @@ def delete_recipe(request, slug):
 @ login_required
 def follows(request):
     authors = User.objects.filter(following__user=request.user)
-
     page, paginator = lets_paginate(request, authors)
-
     return render(request, 'dishes/subscriptions.html',
                   {'page': page,
                    'paginator': paginator})
@@ -120,15 +103,11 @@ def follows(request):
 
 @ login_required
 def favorite(request):
-
     all_tags = Tag.objects.all()
-
     recipe_list = request.user.favorites.select_related(
         'author').prefetch_related('tags').distinct()
-
     list, tags = get_and_filter_by_tags(request, recipe_list)
     page, paginator = lets_paginate(request, list)
-
     return render(request, 'dishes/favorite.html', {'page': page,
                                                     'paginator': paginator,
                                                     'tags': tags,
@@ -139,16 +118,13 @@ def favorite(request):
 def shoplist(request):
     if request.user.is_authenticated:
         recipe_list = request.user.purchases.all()
-
     else:
         basket = request.session.get('basket')
         if basket is not None:
             recipe_list = Recipe.objects.filter(id__in=basket)
         else:
             recipe_list = []
-
     page, paginator = lets_paginate(request, recipe_list)
-
     return render(request, 'dishes/shoplist.html', {'page': page,
                                                     'paginator': paginator})
 
@@ -158,10 +134,8 @@ def download_file(request):
         recipes = request.user.purchases.all()
     else:
         recipes = Recipe.objects.filter(id__in=request.session.get('basket'))
-
     if not recipes:
         return render(request, 'misc/404.html', status=404)
-
     volumes = Volume.objects.filter(recipe__in=recipes)
     text = 'Список покупок:\n\n'
 

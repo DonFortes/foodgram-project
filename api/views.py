@@ -104,5 +104,4 @@ def ingredients(request):
         ingredients_from_db = list(Ingredient.objects.filter(
             name__startswith=query).values(
                 title=F('name'), dimension=F('measure')))
-
     return JsonResponse(ingredients_from_db, safe=False)
