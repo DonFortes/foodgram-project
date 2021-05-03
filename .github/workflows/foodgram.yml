@@ -19,7 +19,7 @@ jobs:
           pip install flake8 pytest
           pip install -r requirements.txt
       - name: Lint with flake8
-        run: flake8 --exclude=dishes/migrations/,venv/,users/migrations/,foodgram_project/settings.py,/foodgram_project/urls.py
+        run: flake8 --exclude=dishes/migrations/,venv/,users/migrations/,foodgram_project/settings.py,foodgram_project/urls.py
 
         
   build_and_push_to_docker_hub:
