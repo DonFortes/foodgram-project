@@ -20,7 +20,8 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "[::1]",
     "testserver",
-    "nosov.ml"
+    "nosov.ml",
+    "178.154.253.131",
 ]
 
 # Application definition
