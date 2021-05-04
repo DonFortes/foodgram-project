@@ -34,9 +34,9 @@ services:
     ports:
       - "127.0.0.1:8888:80"
     volumes:
-      - ./static:/code/static
-      - ./media:/code/media
-      - ./conf:/etc/nginx/conf.d/
+      - static:/code/static
+      - media:/code/media
+      - nginx_conf:/etc/nginx/conf.d/
     depends_on:
       - django
     restart: always
