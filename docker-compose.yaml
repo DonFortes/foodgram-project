@@ -30,7 +30,7 @@ services:
     entrypoint: /code/entrypoint.sh
 
   nginx:
-    image: nginx:latest
+    image: nginx:1.19.0-alpine
     ports:
       - "127.0.0.1:81:80"
     volumes:
