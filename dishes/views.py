@@ -122,7 +122,8 @@ def shoplist(request):
             recipe_list = Recipe.objects.filter(id__in=basket)
         else:
             recipe_list = []
-    return render(request, 'dishes/shoplist.html', {'recipe_list': recipe_list})
+    return render(request, 'dishes/shoplist.html',
+                  {'recipe_list': recipe_list})
 
 
 def download_file(request):
