@@ -17,7 +17,7 @@ services:
       - ./.env
 
   django:
-    build: azeron/foodgram:latest
+    image: azeron/foodgram:latest
     depends_on:
       - db
     restart: always
