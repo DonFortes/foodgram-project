@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Мои подписки{% endblock %}
 
-{% load static %}    
+{% load static %}
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'pages/myFollow.css' %}">
 {% endblock %}
@@ -60,9 +60,9 @@
 
     </div>
 
-    <!-- pagination -->
+    {% if page %}
     {% include 'includes/pagination.html' %}
-    <!-- /pagination -->
+    {% endif %}
 
 </main>
 {% endblock %}

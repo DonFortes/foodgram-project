@@ -20,8 +20,6 @@
 
             {% csrf_token %}
 
-            {{ form.errors }}
-
             <div class="form__group">
                 <label for="id_name" class="form__label">Название рецепта</label>
                 <div class="form__field-group">
@@ -96,7 +94,7 @@
                     </div>
 
                     <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
-                    <span class="form__error"></span>
+                    <span class="form__error">{{ form.ingredients.errors }}</span>
 
                 </div>
             </div>
@@ -130,7 +128,7 @@
 
                     <label for="id_file" class="form__file-button">Выбрать изображение</label>
                     <input type="file" class="form__file" name="image" id="id_file" value="">
-                    <span class="form__error"></span>
+                    <span class="form__error">{{ form.image.errors }}</span>
                 </div>
             </div>
 
