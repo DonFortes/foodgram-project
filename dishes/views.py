@@ -122,30 +122,28 @@ def shoplist(request):
             recipe_list = Recipe.objects.filter(id__in=basket)
         else:
             recipe_list = []
-    page, paginator = lets_paginate(request, recipe_list)
-    return render(request, 'dishes/shoplist.html', {'page': page,
-                                                    'paginator': paginator})
+    return render(request, 'dishes/shoplist.html', {'recipe_list': recipe_list}
 
 
 def download_file(request):
     if request.user.is_authenticated:
-        recipes = request.user.purchases.all()
+        recipes=request.user.purchases.all()
     else:
-        recipes = Recipe.objects.filter(id__in=request.session.get('basket'))
+        recipes=Recipe.objects.filter(id__in=request.session.get('basket'))
     if not recipes:
         return render(request, 'misc/404.html', status=404)
-    volumes = Volume.objects.filter(recipe__in=recipes)
-    text = 'Список покупок:\n\n'
+    volumes=Volume.objects.filter(recipe__in=recipes)
+    text='Список покупок:\n\n'
 
-    ingredients_dict = defaultdict(int)
+    ingredients_dict=defaultdict(int)
     for ing in sorted(volumes, key=lambda volume: volume.ingredient.name):
-        key = f'{ing.ingredient.name}, {ing.ingredient.measure}'
+        key=f'{ing.ingredient.name}, {ing.ingredient.measure}'
         ingredients_dict[key] += ing.volume
-    ingredients_dict = ingredients_dict
+    ingredients_dict=ingredients_dict
     for key, value in ingredients_dict.items():
         text += (f'{key}: {value}\n')
 
-    response = HttpResponse(text, content_type='text/plain')
-    filename = 'shop_list.txt'
-    response['Content-Disposition'] = f'attachment; filename={filename}'
+    response=HttpResponse(text, content_type='text/plain')
+    filename='shop_list.txt'
+    response['Content-Disposition']=f'attachment; filename={filename}'
     return response

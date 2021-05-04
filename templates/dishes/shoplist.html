@@ -18,7 +18,7 @@
     <div class="card-list card-list_column">
         <ul class="shopping-list">
 
-            {% for recipe in page %}
+            {% for recipe in recipe_list %}
 
             <li class="shopping-list__item" data-id='{{ recipe.id }}'>
                 <div class="recipe recipe_reverse">
@@ -42,8 +42,6 @@
         </a>
 
     </div>
-
-    {% include 'includes/pagination.html' %}
 
 </main>
 {% endblock %}
