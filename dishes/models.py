@@ -150,7 +150,7 @@ class Volume(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Ингредиент',
     )
-    volume = models.PositiveIntegerField()
+    volume = models.PositiveBigIntegerField()
 
     class Meta:
         verbose_name = 'Ингредиент для рецептов'

@@ -1,3 +1,5 @@
+from math import fabs
+
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -44,7 +46,7 @@ def save_recipe(request, form):
             recipe=recipe,
             ingredient=get_object_or_404(
                 Ingredient, name__exact=ingredient_name),
-            volume=int(how_much),
+            volume=fabs(int(how_much)),
         ))
     Volume.objects.bulk_create(ingredients_instances)
     form.save_m2m()
