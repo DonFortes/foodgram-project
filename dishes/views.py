@@ -81,13 +81,13 @@ def edit_recipe(request, slug):
 @ login_required
 def delete_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    url = reverse('single_recipe', args={'slug': slug})
+    url = reverse('index')
+    if recipe.author == request.user or request.user.is_superuser:
+        recipe.delete()
+        return redirect(url)
+    url = reverse('single_recipe', kwargs={'slug': slug})
     if recipe.author != request.user:
         return redirect(url)
-    url = reverse('index')
-    if recipe.author == request.user:
-        recipe.delete()
-    return redirect(url)
 
 
 @ login_required

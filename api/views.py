@@ -100,6 +100,7 @@ def purchases_delete(request, recipe_id):
 @login_required()
 def ingredients(request):
     query = request.GET.get('query')
+    query = query.lower()
     if query:
         ingredients_from_db = list(Ingredient.objects.filter(
             name__startswith=query).values(
