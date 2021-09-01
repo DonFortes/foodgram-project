@@ -1,7 +1,7 @@
 ![example workflow](https://github.com/DonFortes/foodgram-project/actions/workflows/foodgram.yml/badge.svg)
 <img src="https://raw.githubusercontent.com/matacoder/matacoder/main/foodgram.png">
 # Социальная сеть Foodgram.
-### Посмотреть работающий проект [здесь.](https://nosov.ml/)
+### Посмотреть работающий проект можно [здесь.](https://nosov.ml/)
 Технологии: Docker, Django, Gunicorn, PostgreSQL, Nginx, Caddy
 
 
