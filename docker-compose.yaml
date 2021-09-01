@@ -1,10 +1,7 @@
 version: '3.8'
 
 volumes:
-    postgres_data:
-    static:
-    media:
-    nginx_conf:
+  postgres_data:
 
 services:
 
@@ -17,26 +14,24 @@ services:
       - ./.env
 
   django:
-    image: azeron/foodgram:latest
+    build: .
     depends_on:
       - db
     restart: always
     env_file:
       - ./.env
     volumes:
-        - static:/code/static
-        - media:/code/media
-        - nginx_conf:/code/conf/
+      - .:/code/
     entrypoint: /code/entrypoint.sh
 
   nginx:
     image: nginx:1.19.0-alpine
     ports:
-      - "127.0.0.1:81:80"
+      - "127.0.0.1:80:80"
     volumes:
-      - static:/code/static
-      - media:/code/media
-      - nginx_conf:/etc/nginx/conf.d/
+      - ./static:/code/static
+      - ./media:/code/media
+      - ./conf:/etc/nginx/conf.d/
     depends_on:
       - django
     restart: always

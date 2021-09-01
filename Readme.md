@@ -2,6 +2,7 @@
 
 # Project Title
 Социальная сеть Foodgram.
+Технологии: Docker, Django, Gunicorn, PostgreSQL, Nginx
 https://nosov.ml/
 
 ## Project description
