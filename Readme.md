@@ -2,7 +2,7 @@
 
 # Project Title
 ## Социальная сеть Foodgram.
-### https://nosov.ml/
+### Посмотреть работающий проект [здесь](https://nosov.ml/)
 Технологии: Docker, Django, Gunicorn, PostgreSQL, Nginx, Caddy
 
 
