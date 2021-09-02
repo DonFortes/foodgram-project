@@ -1,6 +1,7 @@
 ![example workflow](https://github.com/DonFortes/foodgram-project/actions/workflows/foodgram.yml/badge.svg)
 # Социальная сеть Foodgram.
-![spaghetti-1932466_1920 (2)](https://user-images.githubusercontent.com/53881876/131886127-5d5b9697-3acd-40a5-80da-da206fed2b0a.jpg)
+![spaghetti-1932466_1920 (1)](https://user-images.githubusercontent.com/53881876/131886433-948bf48b-d0b4-482b-a8a9-e26a6ea45f94.jpg)
+
 ### Посмотреть работающий проект можно [здесь.](https://nosov.ml/)
 Технологии: Docker, Django, Gunicorn, PostgreSQL, Nginx, Caddy
 
