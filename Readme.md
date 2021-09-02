@@ -1,5 +1,5 @@
 ![example workflow](https://github.com/DonFortes/foodgram-project/actions/workflows/foodgram.yml/badge.svg)
-# Социальная сеть Foodgram.
+# Foodgram social network.
 ![spaghetti-1932466_1920 (1)](https://user-images.githubusercontent.com/53881876/131886433-948bf48b-d0b4-482b-a8a9-e26a6ea45f94.jpg)
 
 ### You can see a working project [here.](https://nosov.ml/)
