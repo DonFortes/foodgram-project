@@ -1,3 +1,4 @@
+![spaghetti-1932466_1920 (1)](https://user-images.githubusercontent.com/53881876/131880908-22f1dcec-d251-4ec8-8355-83cdfea98e17.jpg)
 ![example workflow](https://github.com/DonFortes/foodgram-project/actions/workflows/foodgram.yml/badge.svg)
 # Социальная сеть Foodgram.
 ### Посмотреть работающий проект можно [здесь.](https://nosov.ml/)
