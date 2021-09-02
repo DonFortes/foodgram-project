@@ -2,17 +2,17 @@
 # Социальная сеть Foodgram.
 ![spaghetti-1932466_1920 (1)](https://user-images.githubusercontent.com/53881876/131886433-948bf48b-d0b4-482b-a8a9-e26a6ea45f94.jpg)
 
-### Посмотреть работающий проект можно [здесь.](https://nosov.ml/)
-Технологии: Docker, Django, Gunicorn, PostgreSQL, Nginx, Caddy
+### You can see a working project [here.](https://nosov.ml/)
+Technologies: Docker, Django, Gunicorn, PostgreSQL, Nginx, Caddy
 
 ## Project description
-Здесь вы можете добавить свои рецепты, а также увидеть рецепты от других авторов, следить за их обновлениями, добавлять рецепты в избранное, а также сможете подготовить удобный список покупок ингредиентов для выбранных блюд.
+Here you can add your own recipes, as well as see recipes from other authors, follow their updates, add recipes to your favorites, and you can also prepare a convenient shopping list for ingredients for selected dishes.
 
 ### Local development
-В корне проекта вы найдете два файла docker-compose. Для того, чтобы запустить локальную разработку проекта - вам нужно переименовать файл docker-compose.yaml в docker-compose-prod.yaml, а docker-compose-dev.yaml в docker-compose.yaml, в котором сохранены настройки для локальной разработки. После чего вам останется лишь выполнить команду:
+At the root of the project, you will find two docker-compose files. In order to start local development of a project, you need to rename the docker-compose.yaml file to docker-compose-prod.yaml, and docker-compose-dev.yaml to docker-compose.yaml, in which the settings for local development are saved. After that, you just have to execute the command:
 
 docker-compose up
 
-Проект будет доступен по локальному адресу: http://127.0.0.1/
+The project will be available at the local address: http://127.0.0.1/
 
-После внесения необходимых изменений - переименуйте файлы docker-compose в обратном порядке. Таким образом проект станет готов для деплоя.
+After making the necessary changes, rename the docker-compose files in reverse order. This will make the project ready for deployment.
